@@ -1,0 +1,23 @@
+.subTitle {
+   font-weight: 600;
+   font-size: 1.15rem;
+   margin-bottom: .4rem;
+   text-transform: uppercase;
+   margin-left: 1.5rem;
+}
+
+.form-check-input[type=radio] {
+   width: 20px;
+   height: 20px;
+}
+
+.form-check {
+   width: 150px;
+   text-align: left;
+}
+
+.textarea {
+   resize: none;
+   font-size: .8rem !important;
+   min-height: 35px;
+}

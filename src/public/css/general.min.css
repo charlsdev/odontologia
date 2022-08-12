@@ -10,6 +10,14 @@ body {
    font-family: 'PT Sans', sans-serif !important;
 }
 
+p {
+   margin-bottom: 0 !important;
+}
+
+a {
+   text-decoration: none !important;
+}
+
 .swal2-title {
    padding: 0 1em 0 !important;
 }
@@ -59,4 +67,23 @@ body {
 .footer__modal {
    display: flex !important;
    justify-content: space-between !important;
+}
+
+.lettersTittle {
+   margin-top: 1.7rem;
+   font-weight: 600;
+   font-size: 2rem;
+   margin-bottom: .9rem;
+}
+
+table {
+   font-size: .85rem;
+}
+
+table thead {
+   text-transform: uppercase;
+}
+
+table thead tr th {
+   text-align: center !important;
 }

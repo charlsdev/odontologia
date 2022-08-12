@@ -1,0 +1,483 @@
+      <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" type="text/css">
+      <link rel="stylesheet" href="/sweetalert2/sweetalert2.min.css" type="text/css">
+      <link rel="stylesheet" href="/datatable/datatables.min.css" type="text/css">
+      <link rel="stylesheet" href="/datatable/DataTables/css/dataTables.bootstrap5.min.css" type="text/css">
+      <link rel="stylesheet" href="/css/nav.min.css" type="text/css">
+
+      <link rel="stylesheet" href="/css/pacients.min.css" type="text/css">
+
+   </head>
+
+   <body>
+      {{> loader}}
+      {{> navbar}}
+      
+      <div class="container">
+         <div class="row">
+            <div class="col-md-12 text-center">
+               <div class="lettersTittle">
+                  PACIENTES
+               </div>
+            </div>
+         </div>
+
+         <div class="row mb-4">
+            <div class="col-md-12">
+               <button type="button" class="btn btn-outline-success btn-sm btnGeneral" onclick="openModalHistory();">
+                  <i class="fa-regular fa-address-book"></i> &nbsp;
+                  Registrar
+               </button>
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-md-12">
+               <table id="listPacientes" class="table is-striped table-striped table-bordered table-sm">
+                  <thead class="table-danger">
+                     <tr>
+                        <th nowrap scope="col">Cédula</th>
+                        <th nowrap scope="col">Nombres Completos</th>
+                        <th nowrap scope="col">Dirección</th>
+                        <th nowrap scope="col">Teléfono</th>
+                        <th nowrap scope="col">Email</th>
+                        <th nowrap scope="col">Acciones</th>
+                     </tr>
+                  </thead>
+                  
+               </table>
+            </div>
+         </div>
+      </div>
+
+      <script src="/JQuery/jquery.min.js"></script>
+      <script src="/js/popper.min.js"></script>
+      <script src="/bootstrap/js/bootstrap.min.js"></script>
+      <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+      <script src="/fontawesome/all.min.js"></script>
+      <script src="/sweetalert2/sweetalert2.min.js"></script>
+      <script src="/imaskJS/imask.min.js"></script>
+      <script src="/datatable/datatables.min.js"></script>
+      <script src="/datatable/DataTables/js/jquery.dataTables.js"></script>
+      <script src="/datatable/DataTables/js/dataTables.bootstrap5.min.js"></script>
+
+      <script src="/js/nav.min.js"></script>
+
+      <div class="modal fade" id="modalHistory" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+               <div class="modal-header header__modal">
+                  
+               </div>
+
+               <div class="modal-body body__modal">
+                  <div class="row">
+                     <div class="subTitle">
+                        # Datos Básicos
+                     </div>
+                  </div>
+
+                  <div class="row mb-3">
+                     <div class="col-md-6 mb-2">
+                        <label for="" class="form-label lblLogin">Cédula</label>
+                        <input type="text" class="form-control iptLogin cedula" id="cedula" maxlength="10" onkeyUp="return Cedula(this);" placeholder="Ingrese su cédula"/>
+                     </div>
+                     <div class="col-md-6 mb-2">
+                        <label for="" class="form-label lblLogin">Fecha de Nacimiento</label>
+                        <input type="date" class="form-control iptLogin" id="fechaNacimiento"  placeholder="Escoja su fecha de nacimiento"/>
+                     </div>
+                     <div class="col-md-6 mb-2">
+                        <label for="" class="form-label lblLogin">Apellidos</label>
+                        <input type="text" class="form-control iptLogin" id="apellidos"  placeholder="Ingrese su apellido"/>
+                     </div>
+                     <div class="col-md-6 mb-2">
+                        <label for="" class="form-label lblLogin">Nombres</label>
+                        <input type="text" class="form-control iptLogin" id="nombres"  placeholder="Ingrese su nombre"/>
+                     </div>
+                     <div class="col-md-6 mb-2">
+                        <label for="" class="form-label lblLogin">Género</label>
+                        <select id="genero" class="form-control iptLogin">
+                           <option value="" disabled selected>Seleccionar...</option>
+                           <option value="Masculino">Masculino</option>
+                           <option value="Femenino">Femenino</option>
+                           <option value="No definido">No definido</option>
+                        </select>
+                     </div>
+                     <div class="col-md-6 mb-2">
+                        <label for="" class="form-label lblLogin">Dirección</label>
+                        <input type="text" class="form-control iptLogin" id="direccion"  placeholder="Ingrese su dirección"/>
+                     </div>
+                     <div class="col-md-6 mb-2">
+                        <label for="" class="form-label lblLogin">Teléfono</label>
+                        <input type="text" class="form-control iptLogin" id="telefono"  placeholder="Ingrese su teléfono" maxlength="10"/>
+                     </div>
+                     <div class="col-md-6 mb-2">
+                        <label for="" class="form-label lblLogin">Email</label>
+                        <input type="text" class="form-control iptLogin" id="email"  placeholder="Ingrese su correo electrónico"/>
+                     </div>
+                  </div>
+
+                  <div class="row">
+                     <div class="subTitle">
+                        # Condiciones Médicas
+                     </div>
+                  </div>
+
+                  <div class="row">
+                     <div class="col-md-12 mb-2">
+                        <label for="" class="form-label lblLogin">Antecedentes Patológicos Personales: </label> <br>
+                        
+                        <center>
+                           <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="antec" id="radioOne" value="NO">
+                              <label class="form-check-label" for="inlineRadio1">NO</label>
+                           </div>
+                           <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="antec" id="radioTwo" value="Presión Alta">
+                              <label class="form-check-label" for="inlineRadio2">Presión Alta</label>
+                           </div>
+                           <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="antec" id="radioThree" value="Hemofilia">
+                              <label class="form-check-label" for="inlineRadio3">Hemofilia</label>
+                           </div>
+                           <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="antec" id="radioFour" value="Diabetes">
+                              <label class="form-check-label" for="inlineRadio4">Diabetes</label>
+                           </div>
+                           <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="antec" id="radioFive" value="Cardiopatía">
+                              <label class="form-check-label" for="inlineRadio4">Cardiopatía</label>
+                           </div>
+                           <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="antec" id="radioSix" value="Nefropatía">
+                              <label class="form-check-label" for="inlineRadio4">Nefropatía</label>
+                           </div>
+                        </center>
+                     </div>
+
+                     <div class="col-md-12 mb-2">
+                        <label for="" class="form-label lblLogin">Alergia a algún medicamento: </label> <br>
+                        
+                        <div class="row">
+                           <div class="col-md-3 offset-1 mb-2">
+                              <center>
+                                 <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="medi" id="radioOne" value="NO">
+                                    <label class="form-check-label" for="inlineRadio1">NO</label>
+                                 </div>
+                                 <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="medi" id="radioTwo" value="SI">
+                                    <label class="form-check-label" for="inlineRadio2">SI</label>
+                                 </div>
+                              </center>
+                           </div>
+
+                           <div class="col-md-6 my-auto">
+                              <textarea class="form-control textarea" name="mediCual" id="mediCual" placeholder="Escribir a cuales medicamentos es alérgico..." ></textarea>
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-12 mb-2">
+                        <label for="" class="form-label lblLogin">¿Problemas de hemorragia?</label> <br>
+                        
+                        <div class="row">
+                           <div class="col-md-3 offset-1 mb-2">
+                              <center>
+                                 <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="hemo" id="radioOne" value="NO">
+                                    <label class="form-check-label" for="inlineRadio1">NO</label>
+                                 </div>
+                                 <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="hemo" id="radioTwo" value="SI">
+                                    <label class="form-check-label" for="inlineRadio2">SI</label>
+                                 </div>
+                              </center>
+                           </div>
+
+                           <div class="col-md-6 my-auto">
+                              <textarea class="form-control textarea" name="hemoCuando" id="hemoCuando" placeholder="Escribir cuando le surge la hemorragia al paciente..." ></textarea>
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-12 mb-2">
+                        <label for="" class="form-label lblLogin">¿Hospitalizado(a) durante el año en curso?</label> <br>
+                        
+                        <div class="row">
+                           <div class="col-md-3 offset-1 mb-2">
+                              <center>
+                                 <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="hospi" id="radioOne" value="NO">
+                                    <label class="form-check-label" for="inlineRadio1">NO</label>
+                                 </div>
+                                 <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="hospi" id="radioTwo" value="SI">
+                                    <label class="form-check-label" for="inlineRadio2">SI</label>
+                                 </div>
+                              </center>
+                           </div>
+
+                           <div class="col-md-6 my-auto">
+                              <textarea class="form-control textarea" name="hospiCuando" id="hospiCuando" placeholder="Escribir cuando fue hospitalizado el paciente..." ></textarea>
+                           </div>
+                        </div>
+                     </div>
+
+                     <div class="col-md-12 mb-2">
+                        <label for="" class="form-label lblLogin">¿Está embarazada? (Solo mujeres)</label> <br>
+                        
+                        <div class="row">
+                           <div class="col-md-3 offset-1 mb-2">
+                              <center>
+                                 <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="embarazo" id="radioOne" value="NO">
+                                    <label class="form-check-label" for="inlineRadio1">NO</label>
+                                 </div>
+                                 <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="embarazo" id="radioTwo" value="SI">
+                                    <label class="form-check-label" for="inlineRadio2">SI</label>
+                                 </div>
+                              </center>
+                           </div>
+
+                           <div class="col-md-6 my-auto">
+                              <input type="number" class="form-control iptLogin" id="mesEmbarazo" placeholder="Ingrese el mes de embarazo"/>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="modal-footer footer__modal">
+                  
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <script>
+         $(document).ready(function() {
+            listPacientes = $('#listPacientes').DataTable({
+               destroy: true,
+               "ajax": {
+                  "url": '/allPacients',
+                  "dataSrc":""
+               },
+               "columns": [
+                  {"data": null,
+                        render: function ( data, type, row ) {
+                           return row.datosPersonal.cedula;
+                        }
+                  },
+                  {"data": null,
+                        render: function ( data, type, row ) {
+                           return `${row.datosPersonal.apellidos} ${row.datosPersonal.nombres}`;
+                        }
+                  },
+                  {"data": null,
+                        render: function ( data, type, row ) {
+                           return row.datosPersonal.direccion;
+                        }
+                  },
+                  {"data": null,
+                        render: function ( data, type, row ) {
+                           return row.datosPersonal.telefono;
+                        }
+                  },                 
+                  {"data": null,
+                        render: function ( data, type, row ) {
+                           return row.datosPersonal.email;
+                        }
+                  },             
+                  {"data": null,
+                        render: function ( data, type, row ) {
+                           return `
+                                 <center>
+                                    <button type="button" class="btn btn-outline-primary btn-sm btnTable" onclick="">
+                                       <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-success btn-sm btnTable" onclick="">
+                                       <i class="fa-regular fa-address-card"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger btn-sm btnTable" onclick="">
+                                       <i class="fa-solid fa-teeth-open"></i>
+                                    </button>
+                                 </center>
+                              `;
+                        }
+                  },
+               ],
+               responsive: true,
+               language: idioma,
+            });
+         });
+      
+         const openModalHistory = () => {
+            $('#cedula').val('')
+            $('#apellidos').val('')
+            $('#nombres').val('')
+            $('#fechaNacimiento').val('')
+            $('#genero').val('')
+            $('#direccion').val('')
+            $('#telefono').val('')
+            $('#email').val('')
+
+            $('input[name="antec"]').prop('checked', false)
+            $('input[name="medi"]').prop('checked', false)
+            $('#mediCual').val('')
+            $('input[name="hemo"]').prop('checked', false)
+            $('#hemoCuando').val('')
+            $('input[name="hospi"]').prop('checked', false)
+            $('#hospiCuando').val('')
+            $('input[name="embarazo"]').prop('checked', false)
+            $('#mesEmbarazo').val('')
+
+            document.querySelector('.header__modal').innerHTML = `
+                  <div class="modal-title tittle__modal">REGISTRAR FICHA CLÍNICA</div>`;
+
+            document.querySelector('.footer__modal').innerHTML = `
+                  <button type="button" class="btn btn-outline-secondary btn-sm btnGeneral" data-bs-dismiss="modal">
+                     Close
+                  </button>
+
+                  <button type="button" class="btn btn-outline-success btn-sm btnGeneral" onclick="createHistoryClinica();">
+                     Generar
+                  </button>`;
+
+            $('#modalHistory').modal('show')
+         }
+
+         const createHistoryClinica = () => {
+            cedula = $.trim($('#cedula').val());
+            apellidos = $.trim($('#apellidos').val());
+            nombres = $.trim($('#nombres').val());
+            fechaNacimiento = $.trim($('#fechaNacimiento').val());
+            genero = $.trim($('#genero').val());
+            direccion = $.trim($('#direccion').val());
+            telefono = $.trim($('#telefono').val());
+            email = $.trim($('#email').val());
+            antec = $.trim($("input[name=antec]:checked").val());
+            medi = $.trim($("input[name=medi]:checked").val());
+            mediCual = $.trim($('#mediCual').val());
+            hemo = $.trim($("input[name=hemo]:checked").val());
+            hemoCuando = $.trim($('#hemoCuando').val());
+            hospi = $.trim($("input[name=hospi]:checked").val());
+            hospiCuando = $.trim($('#hospiCuando').val());
+            embarazo = $.trim($("input[name=embarazo]:checked").val());
+            mesEmbarazo = $.trim($('#mesEmbarazo').val());
+
+            if (
+               cedula == '' || 
+               apellidos == '' || 
+               nombres == '' || 
+               fechaNacimiento == '' || 
+               genero == '' || 
+               direccion == '' || 
+               telefono == '' || 
+               email == ''
+            ) {
+               Swal.fire({
+                  position: 'top-end',
+                  imageUrl: '/img/dental.png',
+                  imageWidth: 230,
+                  imageHeight: 150,
+                  imageAlt: 'Dental System',
+                  title: 'CAMPOS VACÍOS',
+                  html: `<p style="font-size: 1rem;">Los campos no pueden ir vacíos o con espacios.</p>`,
+                  showConfirmButton: false,
+                  timer: 1500
+               })
+            } else {
+               Swal.fire({
+                  title: 'Generar ficha clínica!',
+                  html: `Deseas generar una nueva ficha clínica.`,
+                  imageUrl: '/img/dental.png',
+                  imageWidth: 230,
+                  imageHeight: 150,
+                  imageAlt: 'Dental System',
+                  showCancelButton: true,
+                  confirmButtonColor: '#049947',
+                  cancelButtonColor: '#f34943',
+                  confirmButtonText: 'Sí, generar!',
+                  cancelButtonText: 'No, cancelar!',
+                  reverseButtons: true,
+                  allowOutsideClick: false
+               }).then((result) => {
+                  if (result.value == true) {
+                     bloqueointerface();
+
+                     $.ajax({
+                        url: "/newHistory",
+                        type: "POST",
+                        datatype: "json",
+                        data: {
+                           cedula: cedula ?? '',
+                           apellidos: apellidos ?? '',
+                           nombres: nombres ?? '',
+                           fechaNacimiento: fechaNacimiento ?? '',
+                           genero: genero ?? '',
+                           direccion: direccion ?? '',
+                           telefono: telefono ?? '',
+                           email: email ?? '',
+                           antec: antec ?? '',
+                           medi: medi ?? '',
+                           mediCual: mediCual ?? '',
+                           hemo: hemo ?? '',
+                           hemoCuando: hemoCuando ?? '',
+                           hospi: hospi ?? '',
+                           hospiCuando: hospiCuando ?? '',
+                           embarazo: embarazo ?? '',
+                           mesEmbarazo: mesEmbarazo ?? ''
+                        }
+                     })
+                     .done(function(res) {
+                        if (res.res == 'true') {
+                           Swal.fire({
+                              title: res.tittle,
+                              html: '<p style="font-size: 1rem;">'+res.description+'</p>',
+                              imageUrl: '/img/dental.png',
+                              imageWidth: 230,
+                              imageHeight: 150,
+                              imageAlt: 'Dental System',
+                              allowOutsideClick: false
+                           }).then((result) => {
+                              if (result.value == true) {
+                                 listPacientes.ajax.reload(null, false);
+                                 $('#modalHistory').modal('hide')
+                              }
+                           })
+                        }
+                        
+                        if (res.res == 'false') {                           
+                           Swal.fire({
+                              title: res.tittle,
+                              html: '<p style="font-size: 1rem;">'+res.description+'</p>',
+                              icon: res.icon,
+                              allowOutsideClick: false
+                           })
+                        }
+
+                        if (res.res == 'error') {                           
+                           Swal.fire({
+                              title: res.tittle,
+                              html: '<p style="font-size: 1rem;">'+res.description+'</p>',
+                              icon: res.icon,
+                              allowOutsideClick: false
+                           })
+                        }
+
+                        desbloqueointerface();
+                     })
+                     .fail(function() {
+                        console.error("Error inesperado");
+
+                        desbloqueointerface();
+                     });
+                  }
+               })
+            }
+         }
+      
+      </script>
+
+      {{> language}}
