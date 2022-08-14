@@ -1,7 +1,7 @@
 import passport from 'passport';
 
 import UserModel from '../model/User.js';
-import PacientsModel from '../model/Pacientes.js';
+import FichaModel from '../model/Ficha.js';
 import HistorialModel from '../model/Historial.js';
 
 export const renderLogin = async (req, res) => {
@@ -137,7 +137,7 @@ export const getAllPacients = async (req, res) => {
    let allPacients;
 
    try {
-      allPacients = await PacientsModel
+      allPacients = await FichaModel
          .find()
          .select({
             datosPersonal: 1
@@ -151,7 +151,7 @@ export const getAllPacients = async (req, res) => {
    }
 };
 
-export const newHistory = async (req, res) => {
+export const newFicha = async (req, res) => {
    const {
       cedula,
       apellidos,
@@ -208,7 +208,7 @@ export const newHistory = async (req, res) => {
       });
    } else {
       try {
-         const searchUser = await PacientsModel
+         const searchUser = await FichaModel
             .findOne({
                'datosPersonal.cedula': cedulaN
             })
@@ -223,7 +223,7 @@ export const newHistory = async (req, res) => {
                res: 'false'
             });
          } else {
-            const newPaciente = new PacientsModel({
+            const newPaciente = new FichaModel({
                datosPersonal: {
                   cedula: cedulaN,
                   apellidos: apellidosN,
@@ -285,6 +285,244 @@ export const newHistory = async (req, res) => {
    }
 };
 
+export const searchFicha = async (req, res) => {
+   const {
+      id
+   } = req.query;
+
+   let idN = id.trim();
+
+   if (
+      idN === ''
+   ) {
+      res.json({
+         tittle: 'Campos Vacíos',
+         description: 'Los campos no pueden ir vacíos o con espacios!',
+         icon: 'warning',
+         res: 'false',
+      });
+   } else {
+      try {
+         const searchHistory = await FichaModel
+            .findOne({
+               _id: idN
+            })
+            .select({
+               datosPersonal: 1,
+               patologico: 1,
+               alergia: 1,
+               hemorragia: 1,
+               hospitalizado: 1,
+               embarazo: 1
+            });
+         // console.log(searchHistory);
+
+         res.json({
+            res: 'data',
+            data: searchHistory
+         });
+      } catch (e) {
+         console.log(e);
+
+         res.json({
+            tittle: 'Problemas',
+            description: 'Opss! Error 500 x_x. ¡Intentelo más luego!',
+            icon: 'error',
+            res: 'error',
+         });
+      }
+   }
+};
+
+export const updateFicha = async (req, res) => {
+   const {
+      id,
+      apellidos,
+      nombres,
+      fechaNacimiento,
+      genero,
+      direccion,
+      telefono,
+      email,
+      antec,
+      medi,
+      mediCual,
+      hemo,
+      hemoCuando,
+      hospi,
+      hospiCuando,
+      embarazo,
+      mesEmbarazo,
+   } = req.body;
+
+   let idN = id.trim(),
+      apellidosN = apellidos.trim(),
+      nombresN = nombres.trim(),
+      fechaNacimientoN = fechaNacimiento.trim(),
+      generoN = genero.trim(),
+      direccionN = direccion.trim(),
+      telefonoN = telefono.trim(),
+      emailN = email.trim(),
+      antecN = antec.trim(),
+      mediN = medi.trim(),
+      mediCualN = mediCual.trim(),
+      hemoN = hemo.trim(),
+      hemoCuandoN = hemoCuando.trim(),
+      hospiN = hospi.trim(),
+      hospiCuandoN = hospiCuando.trim(),
+      embarazoN = embarazo.trim(),
+      mesEmbarazoN = mesEmbarazo.trim();
+
+   if (
+      idN === '' ||
+      apellidosN === '' ||
+      nombresN === '' ||
+      fechaNacimientoN === '' ||
+      generoN === '' ||
+      direccionN === '' ||
+      telefonoN === '' ||
+      emailN === ''
+   ) {
+      res.json({
+         tittle: 'Campos Vacíos',
+         description: 'Los campos no pueden ir vacíos o con espacios!',
+         icon: 'warning',
+         res: 'false',
+      });
+   } else {
+      try {
+         const searchFicha = await FichaModel
+            .findOne({
+               _id: idN
+            })
+            .lean();
+         console.log(searchFicha);
+
+         if (!searchFicha) {
+            res.json({
+               tittle: 'FICHA CLÍNICA NO EXISTENTE',
+               description: 'La ficha clínica a actualizar no existe.',
+               icon: 'info',
+               res: 'false'
+            });
+         } else {
+            const updateFicha = await FichaModel
+               .updateOne({
+                  _id: id
+               }, {
+                  $set: {
+                     'datosPersonal.apellidos': apellidosN,
+                     'datosPersonal.nombres': nombresN,
+                     'datosPersonal.fechaNacimiento': fechaNacimientoN,
+                     'datosPersonal.genero': generoN,
+                     'datosPersonal.direccion': direccionN,
+                     'datosPersonal.telefono': telefonoN,
+                     'datosPersonal.email': emailN,
+                     patologico: antecN,
+                     'alergia.estado': mediN,
+                     'alergia.cuales': mediCualN,
+                     'hemorragia.estado': hemoN,
+                     'hemorragia.cuando': hemoCuandoN,
+                     'hospitalizado.estado': hospiN,
+                     'hospitalizado.motivo': hospiCuandoN,
+                     'embarazo.estado': embarazoN,
+                     'embarazo.mes': mesEmbarazoN
+                  }
+               });
+            console.log(updateFicha);
+
+            if (updateFicha.modifiedCount > 0) {
+               res.json({
+                  tittle: 'FICHA CLÍNICA ACTUALIZADA',
+                  description: 'Se ha actualizado la ficha clínica del usuario con éxito',
+                  icon: 'success',
+                  res: 'true',
+               });
+            } else {
+               res.json({
+                  tittle: 'FICHA CLÍNICA NO ACTUALIZADA',
+                  description: 'No se ha podido actualizar la ficha clínica al usuario',
+                  icon: 'info',
+                  res: 'false',
+               });
+            }
+         }
+      } catch (e) {
+         console.log(e);
+
+         res.json({
+            tittle: 'Problemas',
+            description: 'Opss! Error 500 x_x. ¡Intentelo más luego!',
+            icon: 'error',
+            res: 'error',
+         });
+      }
+   }
+};
+
+export const readFicha = async (req, res) => {
+   const {
+      id
+   } = req.query;
+
+   let idN = id.trim();
+
+   if (
+      idN === ''
+   ) {
+      res.json({
+         tittle: 'Campos Vacíos',
+         description: 'Los campos no pueden ir vacíos o con espacios!',
+         icon: 'warning',
+         res: 'false',
+      });
+   } else {
+      try {
+         const searchFicha = await FichaModel
+            .findOne({
+               _id: idN
+            })
+            .select({
+               datosPersonal: 1,
+               patologico: 1,
+               alergia: 1,
+               hemorragia: 1,
+               hospitalizado: 1,
+               embarazo: 1
+            });
+
+         const searchHistory = await HistorialModel
+            .find({
+               _IDPacient: idN
+            })
+            .select({
+               fecha: 1,
+               tratamiento: 1,
+               monto: 1,
+               observaciones: 1,
+               estado: 1,
+            })
+            .lean();
+
+         res.json({
+            res: 'data',
+            data: {
+               ficha: searchFicha,
+               historial: searchHistory
+            }
+         });
+      } catch (e) {
+         console.log(e);
+
+         res.json({
+            tittle: 'Problemas',
+            description: 'Opss! Error 500 x_x. ¡Intentelo más luego!',
+            icon: 'error',
+            res: 'error',
+         });
+      }
+   }
+};
 
 
 

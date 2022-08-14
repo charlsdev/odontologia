@@ -87,3 +87,33 @@ table thead {
 table thead tr th {
    text-align: center !important;
 }
+
+.center {
+   text-align: center;
+}
+
+.left {
+   text-align: left;
+}
+
+.body__modal .__tittleInitials {
+   color: #594cb9;
+}
+
+.body__modal .__textBold {
+   font-weight: 600 !important;
+   text-transform: uppercase !important;
+   margin-left: 10px !important;
+}
+
+.body__modal .__textNormal {
+   text-transform: uppercase !important;
+   font-style: italic;
+   margin-left: 18px !important;
+}
+
+.__bodyData,
+.__bodyConditions {
+   font-size: .87rem !important;
+   letter-spacing: .5px;
+}

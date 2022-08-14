@@ -16,15 +16,20 @@ const historialSchema = new Schema ({
    },
    tratamiento: {
       type: String,
-      required: true
+      // required: true
    },
    monto: {
       type: String,
-      required: true
+      // required: true
    },
    observaciones: {
       type: String,
+      // required: true
+   },
+   estado: {
+      type: String,
       required: true
+      // Pendiente -- Culminado
    }
 }, {
    timestamps: true,
