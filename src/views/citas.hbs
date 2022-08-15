@@ -1,0 +1,578 @@
+      <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css" type="text/css">
+      <link rel="stylesheet" href="/sweetalert2/sweetalert2.min.css" type="text/css">
+      <link rel="stylesheet" href="/datatable/datatables.min.css" type="text/css">
+      <link rel="stylesheet" href="/datatable/DataTables/css/dataTables.bootstrap5.min.css" type="text/css">
+      <link rel="stylesheet" href="/css/nav.min.css" type="text/css">
+
+      <link rel="stylesheet" href="/css/pacients.min.css" type="text/css">
+
+   </head>
+
+   <body>
+      {{> loader}}
+      {{> navbar}}
+      
+      <div class="container">
+         <div class="row">
+            <div class="col-md-12 text-center">
+               <div class="lettersTittle">
+                  CITAS
+               </div>
+            </div>
+         </div>
+
+         <div class="row mb-4">
+            <div class="col-md-12">
+               <button type="button" class="btn btn-outline-primary btn-sm btnGeneral" onclick="openModalCita();">
+                  <i class="fa-regular fa-address-book"></i> &nbsp;
+                  Separar Cita
+               </button>
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-md-12">
+               <table id="listCitas" class="table is-striped table-striped table-bordered table-sm">
+                  <thead class="table-warning">
+                     <tr>
+                        <th nowrap scope="col">Cédula</th>
+                        <th nowrap scope="col">Nombres Completos</th>
+                        <th nowrap scope="col">Fecha</th>
+                        <th nowrap scope="col">Estado</th>
+                        <th nowrap scope="col">Tratamiento</th>
+                        <th nowrap scope="col">Precio</th>
+                        <th nowrap scope="col">Acciones</th>
+                     </tr>
+                  </thead>
+                  
+               </table>
+            </div>
+         </div>
+      </div>
+      
+      <br>
+
+      <script src="/JQuery/jquery.min.js"></script>
+      <script src="/js/popper.min.js"></script>
+      <script src="/bootstrap/js/bootstrap.min.js"></script>
+      <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+      <script src="/fontawesome/all.min.js"></script>
+      <script src="/sweetalert2/sweetalert2.min.js"></script>
+      <script src="/imaskJS/imask.min.js"></script>
+      <script src="/datatable/datatables.min.js"></script>
+      <script src="/datatable/DataTables/js/jquery.dataTables.js"></script>
+      <script src="/datatable/DataTables/js/dataTables.bootstrap5.min.js"></script>
+      <script src="/momentJS/moment.js"></script>
+      <script src="/momentJS/es.min.js"></script>
+
+      <script src="/js/nav.min.js"></script>
+
+      {{!-- Modal Add Cita --}}
+      <div class="modal fade" id="modalAddCita" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div class="modal-dialog">
+            <div class="modal-content">
+               <div class="modal-header header__modal">
+                  <div class="modal-title tittle__modal">SEPARAR CITA</div>
+               </div>
+
+               <div class="modal-body body__modal">
+                  <div class="row">
+                     <div class="subTitle">
+                        # Datos de la Cita
+                     </div>
+                  </div>
+
+                  <div class="row mb-2">
+                     <div class="col-md-12 mb-2 ">
+                        <label for="" class="form-label lblLogin">Paciente</label>
+                        <select id="IDPacienteS" class="form-control iptLogin __pacients"> </select>
+                     </div>
+
+                     <div class="col-md-6 mb-2">
+                        <label for="" class="form-label lblLogin">Fecha</label>
+                        <input type="date" class="form-control iptLogin" id="fechaS" />
+                     </div>
+
+                     <div class="col-md-6 mb-2">
+                        <label for="" class="form-label lblLogin">Precio</label>
+                        <input type="text" class="form-control iptLogin" id="precioS" placeholder="Ingrese el monto" />
+                     </div>
+
+                     <div class="col-md-12 mb-2">
+                        <label for="" class="form-label lblLogin">Tratamiento</label>
+                        <textarea class="form-control textarea" id="tratamientoS" rows="2" placeholder="Escribir el tratamiento a realizar..." ></textarea>
+                     </div>
+
+                     <div class="col-md-12 mmb-2">
+                        <label for="" class="form-label lblLogin">Observaciones</label>
+                        <textarea class="form-control textarea" id="observacionesS" rows="5" placeholder="Escribir el tratamiento a realizar..." ></textarea>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="modal-footer footer__modal footerCita">
+                  <button type="button" class="btn btn-outline-secondary btn-sm btnGeneral" data-bs-dismiss="modal">
+                     Close
+                  </button>
+
+                  <button type="button" class="btn btn-outline-success btn-sm btnGeneral" onclick="citaSeparate();">
+                     Agendar
+                  </button>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      {{!-- Modal Update Cita --}}
+      <div class="modal fade" id="modalUpdateCita" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div class="modal-dialog">
+            <div class="modal-content">
+               <div class="modal-header header__modal">
+                  <div class="modal-title tittle__modal">ACTUALIZAR CITA</div>
+               </div>
+
+               <div class="modal-body body__modal">
+                  <div class="row">
+                     <div class="subTitle">
+                        # Datos de la Cita
+                     </div>
+                  </div>
+
+                  <div class="row mb-2">
+                     <div class="col-md-6 mb-2">
+                        <label for="" class="form-label lblLogin">Fecha</label>
+                        <input type="date" class="form-control iptLogin" id="fechaU" />
+                     </div>
+
+                     <div class="col-md-6 mb-2">
+                        <label for="" class="form-label lblLogin">Precio</label>
+                        <input type="text" class="form-control iptLogin" id="precioU" placeholder="Ingrese el monto" />
+                     </div>
+
+                     <div class="col-md-12 mb-2">
+                        <label for="" class="form-label lblLogin">Tratamiento</label>
+                        <textarea class="form-control textarea" id="tratamientoU" rows="2" placeholder="Escribir el tratamiento a realizar..." ></textarea>
+                     </div>
+
+                     <div class="col-md-12 mmb-2">
+                        <label for="" class="form-label lblLogin">Observaciones</label>
+                        <textarea class="form-control textarea" id="observacionesU" rows="5" placeholder="Escribir el tratamiento a realizar..." ></textarea>
+                     </div>
+
+                     <div class="col-md-12 mb-2">
+                        <label for="" class="form-label lblLogin">Estado</label>
+                        <select id="estadoU" class="form-control iptLogin">
+                           <option value="" disabled selected>Seleccionar...</option>
+                           <option value="Pendiente">Pendiente</option>
+                           <option value="Culminado">Culminado</option>
+                        </select>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="modal-footer footer__modal footerCitaUpdate">
+                  
+               </div>
+            </div>
+         </div>
+      </div>
+
+      {{> language}}
+      {{> readFicha}}
+
+      <script>
+         $(document).ready(function() {
+            listCitas = $('#listCitas').DataTable({
+               destroy: true,
+               "ajax": {
+                  "url": '/allCitas',
+                  "dataSrc":""
+               },
+               "columns": [
+                  {"data": null,
+                        render: function ( data, type, row ) {
+                           return row._IDPacient.datosPersonal.cedula;
+                        }
+                  },
+                  {"data": null,
+                        render: function ( data, type, row ) {
+                           return `${row._IDPacient.datosPersonal.apellidos} ${row._IDPacient.datosPersonal.nombres}`;
+                        }
+                  },
+                  {"data": null,
+                        render: function ( data, type, row ) {
+                           return row.fecha;
+                        }
+                  },
+                  {"data": null,
+                        render: function ( data, type, row ) {
+                           return row.estado === 'Pendiente' 
+                                    ? '<span class="mode badge text-bg-danger">Pendiente</span>'
+                                    : '<span class="mode badge text-bg-success">Culminado</span>';
+                        }
+                  },                 
+                  {"data": null,
+                        render: function ( data, type, row ) {
+                           return row.tratamiento;
+                        }
+                  },             
+                  {"data": null,
+                        render: function ( data, type, row ) {
+                           return row.monto;
+                        }
+                  },             
+                  {"data": null,
+                        render: function ( data, type, row ) {
+                           return `
+                                 <center>
+                                    <button type="button" class="btn btn-outline-success btn-sm btnTable" onclick="readFicha('${row._IDPacient._id}', '${row._IDPacient.datosPersonal.apellidos} ${row._IDPacient.datosPersonal.nombres}')">
+                                       <i class="fa-regular fa-address-card"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-primary btn-sm btnTable" onclick="modalEditCita('${row._IDPacient._id}', '${row._id}');">
+                                       <i class="fa-regular fa-pen-to-square"></i>
+                                    </button>
+                                 </center>
+                              `;
+                        }
+                  },
+               ],
+               responsive: true,
+               language: idioma,
+            });
+         });
+
+         const allPacientes = () => {
+            bloqueointerface();
+
+            $.ajax({
+               url: "/allPacients",
+               type: "GET",
+               datatype: "json",
+            })
+            .done(function(res) {
+               document.querySelector('.__pacients').innerHTML = `
+                  <option value="" disabled selected>Seleccionar...</option>`;
+
+               if(res.length > 0) {
+                  res.forEach(data => {
+                     document.querySelector('.__pacients').innerHTML += `
+                        <option value="${data._id}">${data.datosPersonal.apellidos} ${data.datosPersonal.nombres}</option>`;
+                  });
+               }
+
+               desbloqueointerface();
+            })
+            .fail(function() {
+                        console.error("Error inesperado");
+
+                        desbloqueointerface();
+                     });
+         }
+
+         const openModalCita = () => {
+            $('#IDPacienteS').val('')
+            $('#fechaS').val('')
+            $('#precioS').val('')
+            $('#tratamientoS').val('')
+            $('#observacionesS').val('')
+
+            allPacientes();
+
+            $('#modalAddCita').modal('show')
+         }
+
+         const citaSeparate = () => {
+            name = $.trim($("#IDPacienteS option:selected").text());
+            IDPacienteS = $.trim($('#IDPacienteS').val());
+            fechaS = $.trim($('#fechaS').val());
+            precioS = $.trim($('#precioS').val());
+            tratamientoS = $.trim($('#tratamientoS').val());
+            observacionesS = $.trim($('#observacionesS').val());
+
+            if (
+               IDPacienteS == '' || 
+               fechaS == '' || 
+               precioS == '' || 
+               tratamientoS == '' || 
+               observacionesS == ''
+            ) {
+               Swal.fire({
+                  position: 'top-end',
+                  imageUrl: '/img/dental.png',
+                  imageWidth: 230,
+                  imageHeight: 150,
+                  imageAlt: 'Dental System',
+                  title: 'CAMPOS VACÍOS',
+                  html: `<p style="font-size: 1rem;">Los campos no pueden ir vacíos o con espacios.</p>`,
+                  showConfirmButton: false,
+                  timer: 1500
+               })
+            } else {
+               Swal.fire({
+                  title: 'Agendar cita!',
+                  html: `Deseas agendar una nueva cita para <b>${name}</b> el <b>${moment(fechaS).format('ll')}</b>.`,
+                  imageUrl: '/img/dental.png',
+                  imageWidth: 230,
+                  imageHeight: 150,
+                  imageAlt: 'Dental System',
+                  showCancelButton: true,
+                  confirmButtonColor: '#049947',
+                  cancelButtonColor: '#f34943',
+                  confirmButtonText: 'Sí, agendar!',
+                  cancelButtonText: 'No, cancelar!',
+                  reverseButtons: true,
+                  allowOutsideClick: false
+               }).then((result) => {
+                  if (result.value == true) {
+                     bloqueointerface();
+
+                     $.ajax({
+                        url: "/agendarCita",
+                        type: "POST",
+                        datatype: "json",
+                        data: {
+                           id: IDPacienteS ?? '',
+                           fecha: fechaS ?? '',
+                           precio: precioS ?? '',
+                           tratamiento: tratamientoS ?? '',
+                           observaciones: observacionesS ?? ''
+                        }
+                     })
+                     .done(function(res) {
+                        if (res.res == 'true') {
+                           Swal.fire({
+                              title: res.tittle,
+                              html: '<p style="font-size: 1rem;">'+res.description+'</p>',
+                              imageUrl: '/img/dental.png',
+                              imageWidth: 230,
+                              imageHeight: 150,
+                              imageAlt: 'Dental System',
+                              allowOutsideClick: false
+                           }).then((result) => {
+                              if (result.value == true) {
+                                 listCitas.ajax.reload(null, false);
+                                 $('#modalAddCita').modal('hide')
+                              }
+                           })
+                        }
+                        
+                        if (res.res == 'false') {
+                           Swal.fire({
+                              title: res.tittle,
+                              html: '<p style="font-size: 1rem;">'+res.description+'</p>',
+                              icon: res.icon,
+                              allowOutsideClick: false
+                           })
+                        }
+
+                        if (res.res == 'error') {
+                           Swal.fire({
+                              title: res.tittle,
+                              html: '<p style="font-size: 1rem;">'+res.description+'</p>',
+                              icon: res.icon,
+                              allowOutsideClick: false
+                           })
+                        }
+
+                        desbloqueointerface();
+                     })
+                     .fail(function() {
+                        console.error("Error inesperado");
+
+                        desbloqueointerface();
+                     });
+                  }
+               })
+            }
+         }
+
+         const modalEditCita = (idP, idC) => {
+            idC = $.trim(idC);
+            idP = $.trim(idP);
+
+            if (
+               idC === '' ||
+               idP === ''
+            ) {
+               Swal.fire({
+                  position: 'top-end',
+                  imageUrl: '/img/dental.png',
+                  imageWidth: 230,
+                  imageHeight: 150,
+                  imageAlt: 'Dental System',
+                  title: 'CAMPOS VACÍOS',
+                  html: `<p style="font-size: 1rem;">Los campos no pueden ir vacíos o con espacios.</p>`,
+                  showConfirmButton: false,
+                  timer: 1500
+               })
+            } else {
+               bloqueointerface();
+
+               $.ajax({
+                  url: "/searchCita",
+                  type: "GET",
+                  datatype: "json",
+                  data: {
+                     id: idC ?? '',
+                  }
+               })
+               .done(function(res) {
+                  if (res.res == 'data') {
+                     $('#fechaU').val(`${res.data.fecha.split('/').reverse().join('-')}`)
+                     $('#precioU').val(`${res.data.monto}`)
+                     $('#tratamientoU').val(`${res.data.tratamiento}`)
+                     $('#observacionesU').val(`${res.data.observaciones}`)
+                     $('#estadoU').val(`${res.data.estado}`)
+
+                     document.querySelector('.footerCitaUpdate').innerHTML = `
+                           <button type="button" class="btn btn-outline-secondary btn-sm btnGeneral" data-bs-dismiss="modal">
+                              Close
+                           </button>
+
+                           <button type="button" class="btn btn-outline-danger btn-sm btnGeneral" onclick="updateCita('${idP}', '${idC}');">
+                              Actualizar
+                           </button>`;
+                     
+                     $('#modalUpdateCita').modal('show')
+                  }
+                  
+                  if (res.res == 'false') {
+                     Swal.fire({
+                        title: res.tittle,
+                        html: '<p style="font-size: 1rem;">'+res.description+'</p>',
+                        icon: res.icon,
+                        allowOutsideClick: false
+                     })
+                  }
+
+                  if (res.res == 'error') {
+                     Swal.fire({
+                        title: res.tittle,
+                        html: '<p style="font-size: 1rem;">'+res.description+'</p>',
+                        icon: res.icon,
+                        allowOutsideClick: false
+                     })
+                  }
+
+                  desbloqueointerface();
+               })
+               .fail(function() {
+                  console.error("Error inesperado");
+
+                  desbloqueointerface();
+               });
+            }
+         }
+
+         const updateCita = (idP, idC) => {
+            idP = $.trim(idP);
+            idC = $.trim(idC);
+            fecha = $.trim($('#fechaU').val());
+            precio = $.trim($('#precioU').val());
+            tratamiento = $.trim($('#tratamientoU').val());
+            observaciones = $.trim($('#observacionesU').val());
+            estado = $.trim($('#estadoU').val());
+
+            if (
+               idP == '' || 
+               idC == '' || 
+               fecha == '' || 
+               precio == '' || 
+               tratamiento == '' || 
+               observaciones == '' || 
+               estado == ''
+            ) {
+               Swal.fire({
+                  position: 'top-end',
+                  imageUrl: '/img/dental.png',
+                  imageWidth: 230,
+                  imageHeight: 150,
+                  imageAlt: 'Dental System',
+                  title: 'CAMPOS VACÍOS',
+                  html: `<p style="font-size: 1rem;">Los campos no pueden ir vacíos o con espacios.</p>`,
+                  showConfirmButton: false,
+                  timer: 1500
+               })
+            } else {
+               Swal.fire({
+                  title: 'Actualizar cita!',
+                  html: `Deseas actualizar la cita del paciente.`,
+                  imageUrl: '/img/dental.png',
+                  imageWidth: 230,
+                  imageHeight: 150,
+                  imageAlt: 'Dental System',
+                  showCancelButton: true,
+                  confirmButtonColor: '#049947',
+                  cancelButtonColor: '#f34943',
+                  confirmButtonText: 'Sí, actualizar!',
+                  cancelButtonText: 'No, cancelar!',
+                  reverseButtons: true,
+                  allowOutsideClick: false
+               }).then((result) => {
+                  if (result.value == true) {
+                     bloqueointerface();
+
+                     $.ajax({
+                        url: "/updateCita",
+                        type: "POST",
+                        datatype: "json",
+                        data: {
+                           idP: idP ?? '',
+                           idC: idC ?? '',
+                           fecha: fecha ?? '',
+                           precio: precio ?? '',
+                           tratamiento: tratamiento ?? '',
+                           observaciones: observaciones ?? '',
+                           estado: estado ?? ''
+                        }
+                     })
+                     .done(function(res) {
+                        if (res.res == 'true') {
+                           Swal.fire({
+                              title: res.tittle,
+                              html: '<p style="font-size: 1rem;">'+res.description+'</p>',
+                              imageUrl: '/img/dental.png',
+                              imageWidth: 230,
+                              imageHeight: 150,
+                              imageAlt: 'Dental System',
+                              allowOutsideClick: false
+                           }).then((result) => {
+                              if (result.value == true) {
+                                 listCitas.ajax.reload(null, false);
+                                 $('#modalUpdateCita').modal('hide')
+                              }
+                           })
+                        }
+                        
+                        if (res.res == 'false') {
+                           Swal.fire({
+                              title: res.tittle,
+                              html: '<p style="font-size: 1rem;">'+res.description+'</p>',
+                              icon: res.icon,
+                              allowOutsideClick: false
+                           })
+                        }
+
+                        if (res.res == 'error') {
+                           Swal.fire({
+                              title: res.tittle,
+                              html: '<p style="font-size: 1rem;">'+res.description+'</p>',
+                              icon: res.icon,
+                              allowOutsideClick: false
+                           })
+                        }
+
+                        desbloqueointerface();
+                     })
+                     .fail(function() {
+                        console.error("Error inesperado");
+
+                        desbloqueointerface();
+                     });
+                  }
+               })
+            }
+         }
+
+      </script>
+      

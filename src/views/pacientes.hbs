@@ -61,6 +61,8 @@
       <script src="/datatable/datatables.min.js"></script>
       <script src="/datatable/DataTables/js/jquery.dataTables.js"></script>
       <script src="/datatable/DataTables/js/dataTables.bootstrap5.min.js"></script>
+      <script src="/momentJS/moment.js"></script>
+      <script src="/momentJS/es.min.js"></script>
 
       <script src="/js/nav.min.js"></script>
 
@@ -258,68 +260,8 @@
          </div>
       </div>
 
-      {{!-- Modal Read Ficha --}}
-      <div class="modal fade" id="modalFicha" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-               <div class="modal-header header__modal">
-                  <div class="modal-title tittle__modal __tittleInitials">FICHA CLÍNICA</div>
-               </div>
-
-               <div class="modal-body body__modal">
-                  <div class="row">
-                     <div class="subTitle __tittleInitials">
-                        # Datos Personales
-                     </div>
-                  </div>
-
-                  <div class="row mb-2 __bodyData"> </div>
-
-                  <div class="row">
-                     <div class="subTitle __tittleInitials">
-                        # Condiciones Médicas
-                     </div>
-                  </div>
-
-                  <div class="row mb-2 __bodyConditions"> </div>
-
-                  <div class="row">
-                     <div class="subTitle __tittleInitials">
-                        # Historial Clínico
-                     </div>
-                  </div>
-
-                  <div class="row">
-                     <div class="table-responsive">
-                        <table class="table table-sm table-striped table-bordered">
-                           <thead class="table-success">
-                              <tr>
-                                 <th nowrap scope="col">#</th>
-                                 <th nowrap scope="col">Fecha</th>
-                                 <th nowrap scope="col">Estado</th>
-                                 <th nowrap scope="col">Tratamiento</th>
-                                 <th nowrap scope="col">Monto</th>
-                                 <th nowrap scope="col">Observaciones</th>
-                              </tr>
-                           </thead>
-
-                           <tbody class="table-group-divider table-group-divider __itemsHistorial"> </tbody>
-                        </table>
-                     </div>
-
-                  </div>
-               </div>
-
-               <div class="modal-footer footer__modal">
-                  <div></div>
-
-                  <button type="button" class="btn btn-outline-secondary btn-sm btnGeneral" data-bs-dismiss="modal">
-                     Close
-                  </button>
-               </div>
-            </div>
-         </div>
-      </div>
+      {{> language}}
+      {{> readFicha}}
 
       <script>
          $(document).ready(function() {
@@ -365,7 +307,7 @@
                                     <button type="button" class="btn btn-outline-success btn-sm btnTable" onclick="readFicha('${row._id}', '${row.datosPersonal.apellidos} ${row.datosPersonal.nombres}');">
                                        <i class="fa-regular fa-address-card"></i>
                                     </button>
-                                    <button type="button" class="btn btn-outline-danger btn-sm btnTable" onclick="">
+                                    <button type="button" class="btn btn-outline-danger btn-sm btnTable" onclick="modalAddCita('${row._id}', '${row.datosPersonal.apellidos} ${row.datosPersonal.nombres}');">
                                        <i class="fa-solid fa-teeth-open"></i>
                                     </button>
                                  </center>
@@ -787,193 +729,4 @@
             }
          }
 
-         const readFicha = (id, name) => {
-            id = $.trim(id);
-            name = $.trim(name);
-
-            if(
-               id === '' ||
-               name === ''
-            ) {
-               Swal.fire({
-                  position: 'top-end',
-                  imageUrl: '/img/dental.png',
-                  imageWidth: 230,
-                  imageHeight: 150,
-                  imageAlt: 'Dental System',
-                  title: 'CAMPOS VACÍOS',
-                  html: `<p style="font-size: 1rem;">Los campos no pueden ir vacíos o con espacios.</p>`,
-                  showConfirmButton: false,
-                  timer: 1500
-               })
-            } else {
-               Swal.fire({
-                  title: 'Revisar ficha clínica!',
-                  html: `Deseas revisar la ficha clínica de <b>${name}</b>.`,
-                  imageUrl: '/img/dental.png',
-                  imageWidth: 230,
-                  imageHeight: 150,
-                  imageAlt: 'Dental System',
-                  showCancelButton: true,
-                  confirmButtonColor: '#049947',
-                  cancelButtonColor: '#f34943',
-                  confirmButtonText: 'Sí, revisar!',
-                  cancelButtonText: 'No, cancelar!',
-                  reverseButtons: true,
-                  allowOutsideClick: false
-               }).then((result) => {
-                  if (result.value == true) {
-                     bloqueointerface();
-
-                     $.ajax({
-                        url: "/readFicha",
-                        type: "GET",
-                        datatype: "json",
-                        data: {
-                           id: id
-                        }
-                     })
-                     .done(function(res) {                        
-                        if (res.res == 'data') {
-                           console.log(res)
-
-                           document.querySelector('.__bodyData').innerHTML = `
-                                 <div class="col-md-6 mb-2 __textContainer">
-                                    <div class="__textBold">Cédula</div>
-                                    <div class="__textNormal">${res.data.ficha.datosPersonal.cedula}</div>
-                                 </div>
-                                 <div class="col-md-6 mb-2 __textContainer">
-                                    <div class="__textBold">Nombres Completos</div>
-                                    <div class="__textNormal">
-                                       ${res.data.ficha.datosPersonal.nombres} 
-                                       ${res.data.ficha.datosPersonal.apellidos}
-                                    </div>
-                                 </div>
-                                 <div class="col-md-6 mb-2 __textContainer">
-                                    <div class="__textBold">Fecha de Nacimiento</div>
-                                    <div class="__textNormal">${res.data.ficha.datosPersonal.fechaNacimiento}</div>
-                                 </div>
-                                 <div class="col-md-6 mb-2 __textContainer">
-                                    <div class="__textBold">Género</div>
-                                    <div class="__textNormal">${res.data.ficha.datosPersonal.genero}</div>
-                                 </div>
-                                 <div class="col-md-6 mb-2 __textContainer">
-                                    <div class="__textBold">Dirección</div>
-                                    <div class="__textNormal">${res.data.ficha.datosPersonal.direccion}</div>
-                                 </div>
-                                 <div class="col-md-6 mb-2 __textContainer">
-                                    <div class="__textBold">Teléfono</div>
-                                    <div class="__textNormal">${res.data.ficha.datosPersonal.telefono}</div>
-                                 </div>
-                                 <div class="col-md-6 mb-2 __textContainer">
-                                    <div class="__textBold">Email</div>
-                                    <div class="__textNormal">${res.data.ficha.datosPersonal.email}</div>
-                                 </div>
-                              `;
-
-                           document.querySelector('.__bodyConditions').innerHTML = `
-                                 <div class="col-md-6 mb-2 __textContainer">
-                                    <div class="__textBold">ANTECEDENTES PATOLÓGICOS PERSONALES: </div>
-                                    <div class="__textNormal">
-                                       ${res.data.ficha.patologico}
-                                    </div>
-                                 </div>
-                                 <div class="col-md-6 mb-2 __textContainer">
-                                    <div class="__textBold">ALERGIA A ALGÚN MEDICAMENTO:</div>
-                                    <div class="__textNormal">
-                                       ${res.data.ficha.alergia.estado} - 
-                                       ${res.data.ficha.alergia.cuales}
-                                    </div>
-                                 </div>
-                                 <div class="col-md-6 mb-2 __textContainer">
-                                    <div class="__textBold">¿PROBLEMAS DE HEMORRAGIA?</div>
-                                    <div class="__textNormal">
-                                       ${res.data.ficha.hemorragia.estado} - 
-                                       ${res.data.ficha.hemorragia.cuando}
-                                    </div>
-                                 </div>
-                                 <div class="col-md-6 mb-2 __textContainer">
-                                    <div class="__textBold">¿HOSPITALIZADO(A) DURANTE EL AÑO EN CURSO?</div>
-                                    <div class="__textNormal">
-                                       ${res.data.ficha.hospitalizado.estado} - 
-                                       ${res.data.ficha.hospitalizado.motivo}
-                                    </div>
-                                 </div>
-                                 <div class="col-md-6 mb-2 __textContainer">
-                                    <div class="__textBold">¿ESTÁ EMBARAZADA? (SOLO MUJERES)</div>
-                                    <div class="__textNormal">
-                                       ${res.data.ficha.embarazo.estado} - 
-                                       ${res.data.ficha.embarazo.mes}
-                                    </div>
-                                 </div>
-                              `;
-                           
-                           document.querySelector('.__itemsHistorial').innerHTML = ``;
-
-                           if(res.data.historial.length > 0) {
-                              let array = res.data.historial;
-
-                              array.forEach(data => {
-                                 document.querySelector('.__itemsHistorial').innerHTML += `
-                                       <tr>
-                                          <th nowrap class="center bold">${++num}</th>
-                                          <th nowrap>${data.fecha}</th>
-                                          <th nowrap class="center" >
-                                             ${data.estado === 'Pendiente' 
-                                                ? '<span class="mode badge badge-pill badge-danger">Pendiente</span>'
-                                                : '<span class="mode badge badge-pill badge-success">Culminado</span>'
-                                             }
-                                          </th>
-                                          <th nowrap >${data.tratamiento}</th>
-                                          <th nowrap >${parseFloat(data.monto).toFixed(2)}</th>
-                                          <th nowrap >${data.observaciones}</th>
-                                       </tr>
-                                    `;
-                              });
-                           } else {
-                              document.querySelector('.__itemsHistorial').innerHTML = `
-                                 <tr>
-                                    <th colspan="6" class="center">
-                                       No existe historial clínico
-                                    </th>
-                                 </tr>
-                              `;
-                           }
-
-                           $('#modalFicha').modal('show')
-                        }
-                        
-                        if (res.res == 'false') {
-                           Swal.fire({
-                              title: res.tittle,
-                              html: '<p style="font-size: 1rem;">'+res.description+'</p>',
-                              icon: res.icon,
-                              allowOutsideClick: false
-                           })
-                        }
-
-                        if (res.res == 'error') {
-                           Swal.fire({
-                              title: res.tittle,
-                              html: '<p style="font-size: 1rem;">'+res.description+'</p>',
-                              icon: res.icon,
-                              allowOutsideClick: false
-                           })
-                        }
-
-                        desbloqueointerface();
-                     })
-                     .fail(function() {
-                        console.error("Error inesperado");
-
-                        desbloqueointerface();
-                     });
-                  }
-               })
-            }
-         }
-
-         
       </script>
-
-      {{> language}}

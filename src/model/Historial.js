@@ -11,7 +11,7 @@ const historialSchema = new Schema ({
       ref: 'Usuarios'
    },
    fecha: {
-      type: Date,
+      type: String,
       required: true
    },
    tratamiento: {
@@ -36,4 +36,4 @@ const historialSchema = new Schema ({
    versionKey: false
 });
 
-export default model('Historial', historialSchema);
+export default model('Citas', historialSchema);

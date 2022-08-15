@@ -96,6 +96,14 @@ table thead tr th {
    text-align: left;
 }
 
+.right {
+   text-align: right;
+}
+
+.bold {
+   font-weight: 600;
+}
+
 .body__modal .__tittleInitials {
    color: #594cb9;
 }
@@ -116,4 +124,8 @@ table thead tr th {
 .__bodyConditions {
    font-size: .87rem !important;
    letter-spacing: .5px;
+}
+
+.normal {
+   font-weight: 500;
 }

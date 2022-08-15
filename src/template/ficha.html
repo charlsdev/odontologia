@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>InnovaTechS</title>
+
+      <style>
+         /* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap'); */
+         /* @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;1,300&display=swap'); */
+         /* @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;700&display=swap'); */
+         @import url('https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400&display=swap');
+
+         body {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            /* font-family: 'Roboto', sans-serif !important; */
+            /* font-family: 'Open Sans', sans-serif !important; */
+            /* font-family: 'Roboto Slab', serif; */
+            font-family: 'PT Sans', sans-serif;
+         }
+         table {
+            width: 100%;
+         }
+         .containerTemplate {
+            max-width: 100%;
+         }
+         :is(.imgIZ, .waveDER) {
+            position: fixed;
+            bottom: 0;
+            height: 87%;
+            z-index: -1;
+            opacity: 0.5;
+         }
+         .encabezado {
+            margin: 10px 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+         }
+         .encabezado img {
+            width: 85px;
+         }
+         .encabezado .datosUniversidad {
+            display: grid;
+            text-align: center;
+         }
+         .encabezado .datosUniversidad .title {
+            margin: 5px;
+            font-size: 22px;
+            font-weight: bold;
+         }
+         .encabezado .datosUniversidad .creada {
+            font-size: 12px;
+            margin-bottom: 3px;
+            font-style: oblique;
+            font-weight: bold;
+         }
+         .encabezado .datosUniversidad .direccion {
+            font-size: 12px;
+            margin-bottom: 3px;
+            font-weight: 500;
+         }
+         .encabezado .datosUniversidad .telefono {
+            font-size: 12px;
+            margin-bottom: 3px;
+            font-weight: 500;
+         }
+         .linearsTR {
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            /* margin: 15px;
+            font-size: 21px;
+            font-weight: bold;
+            text-transform: uppercase; */
+         }         
+         .titulo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px;
+            font-size: 19px;
+            font-weight: bold;
+            text-transform: uppercase;
+         }
+         .linearsTR .spaceBlack {
+            width: 5%;
+         }
+         .linearsTR .blakcText {
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 13px;
+            display: flex;
+            text-align: left;
+            /* justify-content: space-between; */
+            /* width: 15%; */
+            width: 25%;
+         }
+         .linearsTR .blakcTextTwo {
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 13px;
+            display: flex;
+            text-align: left;
+            /* justify-content: space-between; */
+            /* width: 15%; */
+            width: 40%;
+         }
+         .linearsTR .textInfo {
+            font-weight: 500;
+            text-transform: uppercase;
+            font-size: 13px;
+            display: flex;
+            text-align: left;
+            /* justify-content: space-between; */
+            width: 100%;
+         }
+
+
+         .datesInitials {
+            margin: 5px 25px;
+            padding-left: 50px;
+         }
+         .datesInitials .blakcText {
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+            width: 130px;
+         }
+         .datesInitials .textInfo {
+            font-size: 13px;
+            text-transform: uppercase;
+            padding: 1px 15px;
+         }
+         .contenido {
+            width: 100%;
+            margin: 10px 25px;
+         }
+         .customers {
+            /* margin: 15px 10px; */
+            margin: 25px 0;
+            border-collapse: collapse;
+            width: 100%;
+         }
+         .customers .number {
+            font-weight: bold;
+            text-align: center;
+         }
+         .customers .headTable th{
+            text-align: center;
+         }
+         .customers th {
+            text-transform: uppercase;
+         }
+         .customers .SE {
+            background: #F5C6CB;
+         }
+         .customers .alingD {
+            text-align: right;
+         }
+         .customers td, 
+         .customers th {
+            border: 1px solid #ddd;
+            padding: 5px 8px;
+            font-size: 12px;
+         }
+         .customers th {
+            /* padding-top: 5px;
+            padding-bottom: 5px; */
+            text-align: left;
+            /* background-color: #F5C6CB; */
+            background-color: #00ceb6;
+            color: #000;
+         }
+      </style>
+   </head>
+
+   <body>
+      <!-- <img class="imgIZ" style="position: fixed; bottom: 0; height: 100%; z-index: -1; opacity: 0.5;" src="https://drive.google.com/uc?export=view&id=1JyC0xsPMJezyeS_k99EHQ94j-Czrh6qy"> -->
+      
+      <table>
+         <tbody>
+            <tr class="encabezado">
+               <th>
+                  <img src="https://drive.google.com/uc?export=view&id=1j5jwCw1MGPln9aHulWMCWbxYa5jbU02_">
+               </th>
+               <th class="datosUniversidad">
+                  <h3 class="title">CLÍNICA MORENO´S DENTAL</h3>
+                  <span class="creada"><b>Dra.</b> Leonor de la concepción Moreno Suárez</span> <br>
+                  <span class="direccion">Dirección: Calle Mejía entre Colón y Santistevan</span> <br>
+                  <span class="telefono">leonormoreno1008@gmail.com - alsusy@yahoo.com</span>
+                  <br>
+                  <span class="telefono">(05) 2601693, 0998899638</span>
+               </th>
+               <th>
+                  <img src="https://drive.google.com/uc?export=view&id=1mDnmVmbbExA-u49sdAQ59m2FB-E6FQ2i">
+               </th>
+            </tr>
+         </tbody>            
+      </table>
+
+      <table>
+         <tbody>   
+            <tr class="titulo">
+               <th>
+                  Ficha Médica
+               </th>
+            </tr>
+         </tbody>            
+      </table>
+
+      <table>
+         <tbody>
+            <tr class="linearsTR">
+               <th class="spaceBlack"></th>
+               <th class="blakcText">
+                  <b>Generado por :</b> 
+               </th>
+               <th class="textInfo">
+                  {{paramsHTML.userDate}}
+               </th>
+            </tr>
+            <tr class="linearsTR">
+               <th class="spaceBlack"></th>
+               <th class="blakcText">
+                  Cédula : 
+               </th>
+               <th class="textInfo">
+                  {{paramsHTML.cedula}}
+               </th>
+            </tr>
+            <tr class="linearsTR">
+               <th class="spaceBlack"></th>
+               <th class="blakcText">
+                  <b>Paciente :</b> 
+               </th>
+               <th class="textInfo">
+                  {{paramsHTML.nombres}}
+                  {{paramsHTML.apellidos}}
+               </th>
+            </tr>
+            <tr class="linearsTR">
+               <th class="spaceBlack"></th>
+               <th class="blakcText">
+                  Fech. Nacimiento : 
+               </th>
+               <th class="textInfo">
+                  {{paramsHTML.fechaNacimiento}}
+               </th>
+            </tr>
+            <tr class="linearsTR">
+               <th class="spaceBlack"></th>
+               <th class="blakcText">
+                  Género : 
+               </th>
+               <th class="textInfo">
+                  {{paramsHTML.genero}}
+               </th>
+            </tr>
+            <tr class="linearsTR">
+               <th class="spaceBlack"></th>
+               <th class="blakcText">
+                  Dirección : 
+               </th>
+               <th class="textInfo">
+                  {{paramsHTML.direccion}}
+               </th>
+            </tr>
+            <tr class="linearsTR">
+               <th class="spaceBlack"></th>
+               <th class="blakcText">
+                  Teléfono : 
+               </th>
+               <th class="textInfo">
+                  {{paramsHTML.telefono}}
+               </th>
+            </tr>
+            <tr class="linearsTR">
+               <th class="spaceBlack"></th>
+               <th class="blakcText">
+                  Email : 
+               </th>
+               <th class="textInfo">
+                  {{paramsHTML.email}}
+               </th>
+            </tr>
+         </tbody>            
+      </table>
+
+      <table>
+         <tbody>   
+            <tr class="titulo">
+               <th>
+                  Condiciones Médicas
+               </th>
+            </tr>
+         </tbody>            
+      </table>
+
+      <table>
+         <tbody>
+            <tr class="linearsTR">
+               <th class="spaceBlack"></th>
+               <th class="blakcTextTwo">
+                  <b>ANTECEDENTES PATOLÓGICOS PERSONALES :</b> 
+               </th>
+               <th class="textInfo">
+                  {{paramsHTML.patologico}}
+               </th>
+            </tr>
+            <tr class="linearsTR">
+               <th class="spaceBlack"></th>
+               <th class="blakcTextTwo">
+                  <b>ALERGIA A ALGÚN MEDICAMENTO :</b> 
+               </th>
+               <th class="textInfo">
+                  {{paramsHTML.alergiaEst}} -
+                  {{paramsHTML.alergiaCua}}
+               </th>
+            </tr>
+            <tr class="linearsTR">
+               <th class="spaceBlack"></th>
+               <th class="blakcTextTwo">
+                  <b>¿PROBLEMAS DE HEMORRAGIA? :</b> 
+               </th>
+               <th class="textInfo">
+                  {{paramsHTML.hemorragiaEst}} -
+                  {{paramsHTML.hemorragiaCua}}
+               </th>
+            </tr>
+            <tr class="linearsTR">
+               <th class="spaceBlack"></th>
+               <th class="blakcTextTwo">
+                  <b>¿HOSPITALIZADO(A) DURANTE EL AÑO EN CURSO? :</b> 
+               </th>
+               <th class="textInfo">
+                  {{paramsHTML.hospitalizadoEst}} -
+                  {{paramsHTML.hospitalizadoCua}}
+               </th>
+            </tr>
+            <tr class="linearsTR">
+               <th class="spaceBlack"></th>
+               <th class="blakcTextTwo">
+                  <b>¿ESTÁ EMBARAZADA? (SOLO MUJERES) :</b> 
+               </th>
+               <th class="textInfo">
+                  {{paramsHTML.embarazoEst}} -
+                  {{paramsHTML.embarazoCua}}
+               </th>
+            </tr>
+         </tbody>            
+      </table>
+
+      <table class="customers">
+         <tr class="headTable">
+            <th>#</th>
+            <th>Apellidos y Nombres</th>
+            <th>Fecha Entrega</th>
+            <th>Hora Entrega</th>
+            <th>Calificación</th>
+         </tr>
+         <!-- {{#each paramsHTML.listCalificacionesQues}}
+            {{#if calificacion}}
+               <tr>
+                  <td class="number">{{index}}</td>
+                  <td>{{namesCompl}}</td>
+                  <td class="alingD">{{fechaEntrega}}</td>
+                  <td class="alingD">{{horaEntrega}}</td>
+                  <td class="alingD">{{calificacion}} Pts.</td>
+               </tr>
+            {{else}}
+               <tr class="SE">
+                  <td class="number">{{index}}</td>
+                  <td>{{namesCompl}}</td>
+                  <td class="alingD">{{fechaEntrega}}</td>
+                  <td class="alingD">{{horaEntrega}}</td>
+                  <td class="alingD">Sin Calificación</td>
+               </tr>
+            {{/if}}
+         {{/each}} -->
+      
+      </table>
+   </body>
+</html>
