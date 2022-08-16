@@ -28,7 +28,7 @@ export default {
             </table>
             <table>
                <tbody>
-                  <tr class="descriptions" style="font-size: 11px; margin: 0 5px;">
+                  <tr class="descriptions" style="font-size: 9px; margin: 0 5px;">
                      <th style="width: 33.3%">
                         <div class="leters IZ" style="font-weight: 500; margin: 0 10px; text-align: left;">
                            <b style="font-weight: bold;">Fuente :</b>
@@ -52,7 +52,7 @@ export default {
             
             <table style="margin-bottom: 10px; padding-top: 2px !important; width: 100%;">
                <tbody>
-                  <tr class="descriptions" style="font-size: 11px; margin: 0 5px;">
+                  <tr class="descriptions" style="font-size: 9px; margin: 0 5px;">
                      <th style="width: 33.3%">
                         <div class="leters IZ" style="font-weight: 500; margin: 0 10px; text-align: left;">
                            <b style="font-weight: bold;">Fecha de impresión :</b>

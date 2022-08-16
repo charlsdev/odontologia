@@ -6,7 +6,7 @@ import resTime from 'response-time';
 import flash from 'connect-flash';
 import session from 'express-session';
 import passport from 'passport';
-import StoreMongo from 'connect-mongo';
+// import StoreMongo from 'connect-mongo';
 import path from 'path';
 const __dirname = path.resolve();
 
@@ -42,12 +42,12 @@ app.use(session({
    resave: true,
    saveUninitialized: true,
    name: 'sessionUser',
-   store: StoreMongo.create({
-      mongoUrl: process.env.MONGO_URL,
-      dbName: 'sessionUser',
-      autoRemove: 'interval',
-      autoRemoveInterval: 59
-   }),
+   // store: StoreMongo.create({
+   //    mongoUrl: process.env.MONGO_URL,
+   //    dbName: 'sessionUser',
+   //    autoRemove: 'interval',
+   //    autoRemoveInterval: 59
+   // }),
 }));
 app.use(passport.initialize());
 app.use(passport.session());
