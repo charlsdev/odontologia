@@ -19,7 +19,8 @@ import {
    updateCita,
    generateFichaPDF,
    viewPDF,
-
+   renderProfile,
+   updateProfile,
    logout,
 } from '../controllers/index.controllers.js';
 
@@ -42,7 +43,8 @@ router.get('/searchCita', isAuthenticated, searchCita);
 router.post('/updateCita', isAuthenticated, updateCita);
 router.get('/generateFichaPDF', isAuthenticated, generateFichaPDF);
 router.get('/pdf/:file', isAuthenticated, viewPDF);
-
+router.get('/profile', isAuthenticated, renderProfile);
+router.put('/update', isAuthenticated, updateProfile);
 router.get('/exit', isAuthenticated, logout);
 
 export default router;

@@ -7,18 +7,12 @@
       <title>InnovaTechS</title>
 
       <style>
-         /* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap'); */
-         /* @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;1,300&display=swap'); */
-         /* @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;700&display=swap'); */
          @import url('https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400&display=swap');
 
          body {
             padding: 0;
             margin: 0;
             box-sizing: border-box;
-            /* font-family: 'Roboto', sans-serif !important; */
-            /* font-family: 'Open Sans', sans-serif !important; */
-            /* font-family: 'Roboto Slab', serif; */
             font-family: 'PT Sans', sans-serif;
          }
          table {
@@ -48,7 +42,7 @@
             text-align: center;
          }
          .encabezado .datosUniversidad .title {
-            margin: 5px;
+            margin: 0 5px;
             font-size: 22px;
             font-weight: bold;
          }
@@ -85,6 +79,7 @@
             font-size: 19px;
             font-weight: bold;
             text-transform: uppercase;
+            color: #5648bd;
          }
          .linearsTR .spaceBlack {
             width: 5%;
@@ -97,7 +92,7 @@
             text-align: left;
             /* justify-content: space-between; */
             /* width: 15%; */
-            width: 25%;
+            width: 20%;
          }
          .linearsTR .blakcTextTwo {
             font-weight: bold;
@@ -174,15 +169,13 @@
             padding-bottom: 5px; */
             text-align: left;
             /* background-color: #F5C6CB; */
-            background-color: #00ceb6;
+            background-color: #a498ff;
             color: #000;
          }
       </style>
    </head>
 
    <body>
-      <!-- <img class="imgIZ" style="position: fixed; bottom: 0; height: 100%; z-index: -1; opacity: 0.5;" src="https://drive.google.com/uc?export=view&id=1JyC0xsPMJezyeS_k99EHQ94j-Czrh6qy"> -->
-      
       <table>
          <tbody>
             <tr class="encabezado">
@@ -358,32 +351,26 @@
 
       <table class="customers">
          <tr class="headTable">
-            <th>#</th>
-            <th>Apellidos y Nombres</th>
-            <th>Fecha Entrega</th>
-            <th>Hora Entrega</th>
-            <th>Calificación</th>
+            <th nowrap >#</th>
+            <th nowrap >Fecha</th>
+            <th nowrap >Estado</th>
+            <th nowrap >Tratamiento</th>
+            <th nowrap >Monto</th>
+            <th>Observaciones</th>
          </tr>
-         <!-- {{#each paramsHTML.listCalificacionesQues}}
-            {{#if calificacion}}
+
+         {{#if paramsHTML.searchHistory}}
+            {{#each paramsHTML.searchHistory}}
                <tr>
-                  <td class="number">{{index}}</td>
-                  <td>{{namesCompl}}</td>
-                  <td class="alingD">{{fechaEntrega}}</td>
-                  <td class="alingD">{{horaEntrega}}</td>
-                  <td class="alingD">{{calificacion}} Pts.</td>
+                  <td class="number">{{@index}}</td>
+                  <td class="alingD">{{fecha}}</td>
+                  <td class="alingD">{{estado}}</td>
+                  <td class="alingD">{{tratamiento}}</td>
+                  <td class="alingD">{{monto}}</td>
+                  <td >{{observaciones}}</td>
                </tr>
-            {{else}}
-               <tr class="SE">
-                  <td class="number">{{index}}</td>
-                  <td>{{namesCompl}}</td>
-                  <td class="alingD">{{fechaEntrega}}</td>
-                  <td class="alingD">{{horaEntrega}}</td>
-                  <td class="alingD">Sin Calificación</td>
-               </tr>
-            {{/if}}
-         {{/each}} -->
-      
+            {{/each}}
+         {{/if}}
       </table>
    </body>
 </html>

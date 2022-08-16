@@ -129,3 +129,20 @@ table thead tr th {
 .normal {
    font-weight: 500;
 }
+
+.formInitials {
+   padding: 15px 25px;
+   border: 1px solid #9081ff;
+   border-radius: 1rem;
+}
+
+:is(.imageBG) {
+   position: fixed;
+   bottom: 0;
+   z-index: -1;
+   opacity: 0.15;
+   margin: auto;
+   left: 0;
+   right: 0;
+   top: 0;
+}

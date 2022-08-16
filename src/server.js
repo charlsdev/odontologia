@@ -63,7 +63,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/', indexRoutes);
-
 app.use(express.static(path.join(__dirname + '/src/public')));
+app.use(express.static(path.join(__dirname + '/src/docs')));
 
 export default app;

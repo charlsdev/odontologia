@@ -845,7 +845,6 @@ export const generateFichaPDF = async (req, res) => {
                embarazo: 1
             })
             .lean();
-         console.log(searchPaciente);
 
          if (!searchPaciente) {
             res.json({
@@ -867,7 +866,6 @@ export const generateFichaPDF = async (req, res) => {
                   estado: 1,
                })
                .lean();
-            console.log(searchHistory);
 
             if (!searchHistory) {
                res.json({
@@ -896,6 +894,7 @@ export const generateFichaPDF = async (req, res) => {
                   hospitalizadoCua: searchPaciente.hospitalizado.motivo,
                   embarazoEst: searchPaciente.embarazo.estado,
                   embarazoCua: searchPaciente.embarazo.mes,
+                  searchHistory
                };
 
                const html = fse.readFileSync(path.join(__dirname, '/src/template/ficha.html'), 'utf-8');
@@ -958,6 +957,124 @@ export const viewPDF = async (req, res) => {
    res.render('pdf', { file });
 };
 
+export const renderProfile = async (req, res) => {
+   const {
+      cedula,
+      apellidos,
+      nombres,
+      fechaNacimiento,
+      genero,
+      direccion,
+      telefono,
+      email
+   } = req.user;
+   
+   res.render('profile', {
+      cedula,
+      apellidos,
+      nombres,
+      fechaNacimiento,
+      genero,
+      direccion,
+      telefono,
+      email
+   });
+};
+
+export const updateProfile = async (req, res) => {
+   const {
+      cedula,
+      apellidos,
+      nombres,
+      fechaNacimiento,
+      genero,
+      direccion,
+      telefono,
+      email
+   } = req.body;
+
+   let cedulaN = cedula.trim(),
+      apellidosN = apellidos.trim(),
+      nombresN = nombres.trim(),
+      fechaNacimientoN = fechaNacimiento.trim(),
+      generoN = genero.trim(),
+      direccionN = direccion.trim(),
+      telefonoN = telefono.trim(),
+      emailN = email.trim();
+
+   if (
+      cedulaN === '' ||
+      apellidosN === '' ||
+      nombresN === '' ||
+      fechaNacimientoN === '' ||
+      generoN === '' ||
+      direccionN === '' ||
+      telefonoN === '' ||
+      emailN === ''
+   ) {
+      res.json({
+         tittle: 'Campos Vacíos',
+         description: 'Los campos no pueden ir vacíos o con espacios!',
+         icon: 'warning',
+         res: 'false',
+      });
+   } else {
+      try {
+         const searchUser = await UserModel
+            .findOne({
+               cedula: req.user.cedula,
+            }).lean();
+
+         if (!searchUser) {
+            res.json({
+               tittle: 'USUARIO NO EXISTENTE',
+               description: 'No te encuentras registrado en el sistema.',
+               icon: 'error',
+               res: 'false'
+            });
+         } else {
+            const updateUser = await UserModel
+               .updateOne({
+                  cedula: cedulaN
+               }, {
+                  cedula: cedulaN,
+                  apellidos: apellidosN,
+                  nombres: nombresN,
+                  fechaNacimiento: fechaNacimientoN,
+                  genero: generoN,
+                  direccion: direccionN,
+                  telefono: telefonoN,
+                  email: emailN
+               });
+
+            if (updateUser.modifiedCount > 0) {
+               res.json({
+                  tittle: 'DATOS ACTUALIZADOS',
+                  description: 'Has actualizado los datos con éxito',
+                  icon: 'success',
+                  res: 'true',
+               });
+            } else {
+               res.json({
+                  tittle: 'DATOS NO ACTUALIZADOS',
+                  description: 'No se ha podido actualizar tus datos',
+                  icon: 'info',
+                  res: 'false',
+               });
+            }
+         }
+      } catch (e) {
+         console.log(e);
+
+         res.json({
+            tittle: 'Problemas',
+            description: 'Opss! Error 500 x_x. ¡Intentelo más luego!',
+            icon: 'error',
+            res: 'error',
+         });
+      }
+   }
+};
 
 export const logout = (req, res, next) => {
    req.logout(req.user, err => {
