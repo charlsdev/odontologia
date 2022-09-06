@@ -52,7 +52,7 @@
          </div>
 
          <div class="modal-footer footer__modal footerReadFicha">
-            
+
          </div>
       </div>
    </div>
@@ -97,7 +97,7 @@
          </div>
 
          <div class="modal-footer footer__modal footerCita">
-            
+
          </div>
       </div>
    </div>
@@ -150,8 +150,18 @@
                      id: id
                   }
                })
-               .done(function(res) {                        
+               .done(function(res) {
                   if (res.res == 'data') {
+                     let allAnt = '', ante = res.data.ficha.patologico;
+                     if(ante.length > 0) {
+                        ante.map((ant, idx) => {
+                           if (idx > 0) allAnt += ' - ';
+                           allAnt += ant.tipo;
+                        });
+                     } else {
+                        allAnt = 'Sin datos'
+                     }
+
                      document.querySelector('.__bodyData').innerHTML = `
                            <div class="col-md-6 mb-2 __textContainer">
                               <div class="__textBold">Cédula</div>
@@ -160,7 +170,7 @@
                            <div class="col-md-6 mb-2 __textContainer">
                               <div class="__textBold">Nombres Completos</div>
                               <div class="__textNormal">
-                                 ${res.data.ficha.datosPersonal.nombres} 
+                                 ${res.data.ficha.datosPersonal.nombres}
                                  ${res.data.ficha.datosPersonal.apellidos}
                               </div>
                            </div>
@@ -190,39 +200,39 @@
                            <div class="col-md-6 mb-2 __textContainer">
                               <div class="__textBold">ANTECEDENTES PATOLÓGICOS PERSONALES: </div>
                               <div class="__textNormal">
-                                 ${res.data.ficha.patologico}
+                                 ${allAnt}
                               </div>
                            </div>
                            <div class="col-md-6 mb-2 __textContainer">
                               <div class="__textBold">ALERGIA A ALGÚN MEDICAMENTO:</div>
                               <div class="__textNormal">
-                                 ${res.data.ficha.alergia.estado} - 
+                                 ${res.data.ficha.alergia.estado} -
                                  ${res.data.ficha.alergia.cuales}
                               </div>
                            </div>
                            <div class="col-md-6 mb-2 __textContainer">
                               <div class="__textBold">¿PROBLEMAS DE HEMORRAGIA?</div>
                               <div class="__textNormal">
-                                 ${res.data.ficha.hemorragia.estado} - 
+                                 ${res.data.ficha.hemorragia.estado} -
                                  ${res.data.ficha.hemorragia.cuando}
                               </div>
                            </div>
                            <div class="col-md-6 mb-2 __textContainer">
                               <div class="__textBold">¿HOSPITALIZADO(A) DURANTE EL AÑO EN CURSO?</div>
                               <div class="__textNormal">
-                                 ${res.data.ficha.hospitalizado.estado} - 
+                                 ${res.data.ficha.hospitalizado.estado} -
                                  ${res.data.ficha.hospitalizado.motivo}
                               </div>
                            </div>
                            <div class="col-md-6 mb-2 __textContainer">
                               <div class="__textBold">¿ESTÁ EMBARAZADA? (SOLO MUJERES)</div>
                               <div class="__textNormal">
-                                 ${res.data.ficha.embarazo.estado} - 
+                                 ${res.data.ficha.embarazo.estado} -
                                  ${res.data.ficha.embarazo.mes}
                               </div>
                            </div>
                         `;
-                     
+
                      document.querySelector('.__itemsHistorial').innerHTML = ``;
 
                      if(res.data.historial.length > 0) {
@@ -234,7 +244,7 @@
                                     <th nowrap class="center bold">${++num}</th>
                                     <th nowrap class="right normal">${data.fecha}</th>
                                     <th nowrap class="center" >
-                                       ${data.estado === 'Pendiente' 
+                                       ${data.estado === 'Pendiente'
                                           ? '<span class="mode badge text-bg-danger">Pendiente</span>'
                                           : '<span class="mode badge text-bg-success">Culminado</span>'
                                        }
@@ -266,7 +276,7 @@
 
                      $('#modalFicha').modal('show')
                   }
-                  
+
                   if (res.res == 'false') {
                      Swal.fire({
                         title: res.tittle,
@@ -302,7 +312,7 @@
       $('#precio').val('')
       $('#tratamiento').val('')
       $('#observaciones').val('')
-      
+
       document.querySelector('.footerCita').innerHTML = `
             <button type="button" class="btn btn-outline-secondary btn-sm btnGeneral" data-bs-dismiss="modal">
                Close
@@ -324,10 +334,10 @@
       observaciones = $.trim($('#observaciones').val());
 
       if (
-         id == '' || 
-         name == '' || 
-         fecha == '' || 
-         precio == '' || 
+         id == '' ||
+         name == '' ||
+         fecha == '' ||
+         precio == '' ||
          tratamiento == ''
       ) {
          Swal.fire({
@@ -388,7 +398,7 @@
                         }
                      })
                   }
-                  
+
                   if (res.res == 'false') {
                      Swal.fire({
                         title: res.tittle,
@@ -418,7 +428,7 @@
          })
       }
    }
-   
+
    const generateFichaPDF = (idP) => {
       idP = $.trim(idP);
 
@@ -479,7 +489,7 @@
                         }
                      })
                   }
-                  
+
                   if (res.res == 'false') {
                      Swal.fire({
                         title: res.tittle,
@@ -509,5 +519,5 @@
          })
       }
    }
-   
+
 </script>

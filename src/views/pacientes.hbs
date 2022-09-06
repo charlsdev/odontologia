@@ -11,7 +11,7 @@
    <body>
       {{> loader}}
       {{> navbar}}
-      
+
       <div class="container">
          <div class="row">
             <div class="col-md-12 text-center">
@@ -43,17 +43,17 @@
                         <th nowrap scope="col">Acciones</th>
                      </tr>
                   </thead>
-                  
+
                </table>
             </div>
          </div>
       </div>
-      
+
       <br>
 
       <script src="/JQuery/jquery.min.js"></script>
       <script src="/js/popper.min.js"></script>
-      <script src="/bootstrap/js/bootstrap.min.js"></script>
+      {{!-- <script src="/bootstrap/js/bootstrap.min.js"></script> --}}
       <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
       <script src="/fontawesome/all.min.js"></script>
       <script src="/sweetalert2/sweetalert2.min.js"></script>
@@ -71,7 +71,7 @@
          <div class="modal-dialog modal-lg">
             <div class="modal-content">
                <div class="modal-header header__modal">
-                  
+
                </div>
 
                <div class="modal-body body__modal">
@@ -130,30 +130,31 @@
                   <div class="row">
                      <div class="col-md-12 mb-2">
                         <label for="" class="form-label lblLogin">Antecedentes Patológicos Personales: </label> <br>
-                        
+
+                        {{!-- Cambios de radio a checkbox --}}
                         <center>
                            <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="antec" id="radioOne" value="NO">
+                              <input class="form-check-input" type="checkbox" name="antec[]" id="radioOne" value="NO">
                               <label class="form-check-label" for="inlineRadio1">NO</label>
                            </div>
                            <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="antec" id="radioTwo" value="Presión Alta">
+                              <input class="form-check-input" type="checkbox" name="antec[]" id="radioTwo" value="Presión Alta">
                               <label class="form-check-label" for="inlineRadio2">Presión Alta</label>
                            </div>
                            <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="antec" id="radioThree" value="Hemofilia">
+                              <input class="form-check-input" type="checkbox" name="antec[]" id="radioThree" value="Hemofilia">
                               <label class="form-check-label" for="inlineRadio3">Hemofilia</label>
                            </div>
                            <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="antec" id="radioFour" value="Diabetes">
+                              <input class="form-check-input" type="checkbox" name="antec[]" id="radioFour" value="Diabetes">
                               <label class="form-check-label" for="inlineRadio4">Diabetes</label>
                            </div>
                            <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="antec" id="radioFive" value="Cardiopatía">
+                              <input class="form-check-input" type="checkbox" name="antec[]" id="radioFive" value="Cardiopatía">
                               <label class="form-check-label" for="inlineRadio4">Cardiopatía</label>
                            </div>
                            <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="antec" id="radioSix" value="Nefropatía">
+                              <input class="form-check-input" type="checkbox" name="antec[]" id="radioSix" value="Nefropatía">
                               <label class="form-check-label" for="inlineRadio4">Nefropatía</label>
                            </div>
                         </center>
@@ -161,7 +162,7 @@
 
                      <div class="col-md-12 mb-2">
                         <label for="" class="form-label lblLogin">Alergia a algún medicamento: </label> <br>
-                        
+
                         <div class="row">
                            <div class="col-md-3 offset-1 mb-2">
                               <center>
@@ -184,7 +185,7 @@
 
                      <div class="col-md-12 mb-2">
                         <label for="" class="form-label lblLogin">¿Problemas de hemorragia?</label> <br>
-                        
+
                         <div class="row">
                            <div class="col-md-3 offset-1 mb-2">
                               <center>
@@ -207,7 +208,7 @@
 
                      <div class="col-md-12 mb-2">
                         <label for="" class="form-label lblLogin">¿Hospitalizado(a) durante el año en curso?</label> <br>
-                        
+
                         <div class="row">
                            <div class="col-md-3 offset-1 mb-2">
                               <center>
@@ -230,7 +231,7 @@
 
                      <div class="col-md-12 mb-2">
                         <label for="" class="form-label lblLogin">¿Está embarazada? (Solo mujeres)</label> <br>
-                        
+
                         <div class="row">
                            <div class="col-md-3 offset-1 mb-2">
                               <center>
@@ -254,7 +255,7 @@
                </div>
 
                <div class="modal-footer footer__modal">
-                  
+
                </div>
             </div>
          </div>
@@ -291,25 +292,47 @@
                         render: function ( data, type, row ) {
                            return row.datosPersonal.telefono;
                         }
-                  },                 
+                  },
                   {"data": null,
                         render: function ( data, type, row ) {
                            return row.datosPersonal.email;
                         }
-                  },             
+                  },
                   {"data": null,
                         render: function ( data, type, row ) {
                            return `
                                  <center>
-                                    <button type="button" class="btn btn-outline-primary btn-sm btnTable" onclick="searchFicha('${row._id}', '${row.datosPersonal.apellidos} ${row.datosPersonal.nombres}')">
-                                       <i class="fa-regular fa-pen-to-square"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-outline-success btn-sm btnTable" onclick="readFicha('${row._id}', '${row.datosPersonal.apellidos} ${row.datosPersonal.nombres}');">
-                                       <i class="fa-regular fa-address-card"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-outline-danger btn-sm btnTable" onclick="modalAddCita('${row._id}', '${row.datosPersonal.apellidos} ${row.datosPersonal.nombres}');">
-                                       <i class="fa-solid fa-teeth-open"></i>
-                                    </button>
+                                    <div class="btn-group">
+                                       <button class="btn btn-outline-danger btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                          <i class="fa-solid fa-list-ul"></i>
+                                       </button>
+                                       <ul class="dropdown-menu">
+                                          <li>
+                                             <a class="dropdown-item" onclick="searchFicha('${row._id}', '${row.datosPersonal.apellidos} ${row.datosPersonal.nombres}')">
+                                                <i class="fa-regular fa-pen-to-square"></i>
+                                                Editar
+                                             </a>
+                                          </li>
+                                          <li>
+                                             <a class="dropdown-item" onclick="deleteFicha('${row._id}', '${row.datosPersonal.apellidos} ${row.datosPersonal.nombres}')">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                                Eliminar
+                                             </a>
+                                          </li>
+                                          <li>
+                                             <a class="dropdown-item" onclick="readFicha('${row._id}', '${row.datosPersonal.apellidos} ${row.datosPersonal.nombres}');">
+                                                <i class="fa-regular fa-address-card"></i>
+                                                Historial Clínico
+                                             </a>
+                                          </li>
+                                          <li>
+                                             <a class="dropdown-item" onclick="modalAddCita('${row._id}', '${row.datosPersonal.apellidos} ${row.datosPersonal.nombres}');">
+                                                <i class="fa-solid fa-teeth-open"></i>
+                                                Separar Cita
+                                             </a>
+                                          </li>
+                                       </ul>
+                                    </div>
                                  </center>
                               `;
                         }
@@ -319,7 +342,7 @@
                language: idioma,
             });
          });
-      
+
          const openModalHistory = () => {
             $('#cedula').val('')
             $('#apellidos').val('')
@@ -330,7 +353,8 @@
             $('#telefono').val('')
             $('#email').val('')
 
-            $('input[name="antec"]').prop('checked', false)
+            //$('input[name="antec"]').prop('checked', false)
+            $('input[name="antec[]"]').prop('checked', false)
             $('input[name="medi"]').prop('checked', false)
             $('#mediCual').val('')
             $('input[name="hemo"]').prop('checked', false)
@@ -364,7 +388,7 @@
             direccion = $.trim($('#direccion').val());
             telefono = $.trim($('#telefono').val());
             email = $.trim($('#email').val());
-            antec = $.trim($("input[name=antec]:checked").val());
+            //antec = $.trim($("input[name=antec]:checked").val());
             medi = $.trim($("input[name=medi]:checked").val());
             mediCual = $.trim($('#mediCual').val());
             hemo = $.trim($("input[name=hemo]:checked").val());
@@ -374,14 +398,19 @@
             embarazo = $.trim($("input[name=embarazo]:checked").val());
             mesEmbarazo = $.trim($('#mesEmbarazo').val());
 
+            antecedentesArray = [];
+            $("input[name='antec[]']:checked").map(function(){
+               antecedentesArray.push($(this).val());
+            });
+
             if (
-               cedula == '' || 
-               apellidos == '' || 
-               nombres == '' || 
-               fechaNacimiento == '' || 
-               genero == '' || 
-               direccion == '' || 
-               telefono == '' || 
+               cedula == '' ||
+               apellidos == '' ||
+               nombres == '' ||
+               fechaNacimiento == '' ||
+               genero == '' ||
+               direccion == '' ||
+               telefono == '' ||
                email == ''
             ) {
                Swal.fire({
@@ -427,7 +456,8 @@
                            direccion: direccion ?? '',
                            telefono: telefono ?? '',
                            email: email ?? '',
-                           antec: antec ?? '',
+                           //antec: antec ?? '',
+                           antec: antecedentesArray ?? '',
                            medi: medi ?? '',
                            mediCual: mediCual ?? '',
                            hemo: hemo ?? '',
@@ -455,7 +485,7 @@
                               }
                            })
                         }
-                        
+
                         if (res.res == 'false') {
                            Swal.fire({
                               title: res.tittle,
@@ -485,10 +515,30 @@
                })
             }
          }
-      
+
          const searchFicha = (id, name) => {
             id = $.trim(id);
             name = $.trim(name);
+
+            $('#cedula').val('')
+            $('#apellidos').val('')
+            $('#nombres').val('')
+            $('#fechaNacimiento').val('')
+            $('#genero').val('')
+            $('#direccion').val('')
+            $('#telefono').val('')
+            $('#email').val('')
+
+            //$('input[name="antec"]').prop('checked', false)
+            $('input[name="antec[]"]').prop('checked', false)
+            $('input[name="medi"]').prop('checked', false)
+            $('#mediCual').val('')
+            $('input[name="hemo"]').prop('checked', false)
+            $('#hemoCuando').val('')
+            $('input[name="hospi"]').prop('checked', false)
+            $('#hospiCuando').val('')
+            $('input[name="embarazo"]').prop('checked', false)
+            $('#mesEmbarazo').val('')
 
             if(
                id === '' ||
@@ -532,7 +582,7 @@
                            id: id
                         }
                      })
-                     .done(function(res) {                        
+                     .done(function(res) {
                         if (res.res == 'data') {
                            $('#cedula').val(`${res.data.datosPersonal.cedula}`)
                            $('#apellidos').val(`${res.data.datosPersonal.apellidos}`)
@@ -543,7 +593,15 @@
                            $('#telefono').val(`${res.data.datosPersonal.telefono}`)
                            $('#email').val(`${res.data.datosPersonal.email}`)
 
-                           $(`input[name=antec][value='${res.data.patologico}']`).prop("checked", true)
+                           // $(`input[name=antec][value='${res.data.patologico}']`).prop("checked", true)
+
+                           let antecedentes = res.data.patologico;
+                           if(antecedentes.length > 0) {
+                              antecedentes.map(ant => {
+                                 $(`input[name='antec[]'][value='${ant.tipo}']`).prop("checked", true)
+                              });
+                           }
+
                            $(`input[name=medi][value='${res.data.alergia.estado}']`).prop("checked", true)
                            $('#mediCual').val(`${res.data.alergia.cuales}`)
                            $(`input[name=hemo][value='${res.data.hemorragia.estado}']`).prop("checked", true)
@@ -567,7 +625,7 @@
 
                            $('#modalHistory').modal('show')
                         }
-                        
+
                         if (res.res == 'false') {
                            Swal.fire({
                               title: res.tittle,
@@ -617,14 +675,19 @@
             embarazo = $.trim($("input[name=embarazo]:checked").val());
             mesEmbarazo = $.trim($('#mesEmbarazo').val());
 
+            antecedentesArray = [];
+            $("input[name='antec[]']:checked").map(function(){
+               antecedentesArray.push($(this).val());
+            });
+
             if (
                id === '' ||
-               apellidos === '' || 
-               nombres === '' || 
-               fechaNacimiento === '' || 
-               genero === '' || 
-               direccion === '' || 
-               telefono === '' || 
+               apellidos === '' ||
+               nombres === '' ||
+               fechaNacimiento === '' ||
+               genero === '' ||
+               direccion === '' ||
+               telefono === '' ||
                email === ''
             ) {
                Swal.fire({
@@ -670,7 +733,8 @@
                            direccion: direccion ?? '',
                            telefono: telefono ?? '',
                            email: email ?? '',
-                           antec: antec ?? '',
+                           //antec: antec ?? '',
+                           antec: antecedentesArray ?? '',
                            medi: medi ?? '',
                            mediCual: mediCual ?? '',
                            hemo: hemo ?? '',
@@ -698,7 +762,99 @@
                               }
                            })
                         }
-                        
+
+                        if (res.res == 'false') {
+                           Swal.fire({
+                              title: res.tittle,
+                              html: '<p style="font-size: 1rem;">'+res.description+'</p>',
+                              icon: res.icon,
+                              allowOutsideClick: false
+                           })
+                        }
+
+                        if (res.res == 'error') {
+                           Swal.fire({
+                              title: res.tittle,
+                              html: '<p style="font-size: 1rem;">'+res.description+'</p>',
+                              icon: res.icon,
+                              allowOutsideClick: false
+                           })
+                        }
+
+                        desbloqueointerface();
+                     })
+                     .fail(function() {
+                        console.error("Error inesperado");
+
+                        desbloqueointerface();
+                     });
+                  }
+               })
+            }
+         }
+
+         const deleteFicha = (id, name) => {
+            id = $.trim(id);
+            name = $.trim(name);
+
+            if(
+               id === '' ||
+               name === ''
+            ) {
+               Swal.fire({
+                  position: 'top-end',
+                  imageUrl: '/img/dental.png',
+                  imageWidth: 230,
+                  imageHeight: 150,
+                  imageAlt: 'Dental System',
+                  title: 'CAMPOS VACÍOS',
+                  html: `<p style="font-size: 1rem;">Los campos no pueden ir vacíos o con espacios.</p>`,
+                  showConfirmButton: false,
+                  timer: 1500
+               })
+            } else {
+               Swal.fire({
+                  title: 'Eliminar ficha clínica!',
+                  html: `Deseas la ficha clínica de <b>${name}</b>. Recuerda que esta acción eliminará todos los datos del paciente y no tiene tiene vuelta atrás.`,
+                  imageUrl: '/img/dental.png',
+                  imageWidth: 230,
+                  imageHeight: 150,
+                  imageAlt: 'Dental System',
+                  showCancelButton: true,
+                  confirmButtonColor: '#049947',
+                  cancelButtonColor: '#f34943',
+                  confirmButtonText: 'Sí, eliminar!',
+                  cancelButtonText: 'No, cancelar!',
+                  reverseButtons: true,
+                  allowOutsideClick: false
+               }).then((result) => {
+                  if (result.value == true) {
+                     bloqueointerface();
+
+                     $.ajax({
+                        url: "/deleteFicha",
+                        type: "DELETE",
+                        datatype: "json",
+                        data: {
+                           id: id
+                        }
+                     })
+                     .done(function(res) {
+                        if (res.res == 'true') {
+                           Swal.fire({
+                              title: res.tittle,
+                              html: '<p style="font-size: 1rem;">'+res.description+'</p>',
+                              imageUrl: '/img/dental.png',
+                              imageWidth: 230,
+                              imageHeight: 150,
+                              imageAlt: 'Dental System',
+                              allowOutsideClick: false
+                           }).then((result) => {
+                              if (result.value == true) {
+                                 listPacientes.ajax.reload(null, false);
+                              }
+                           })
+                        }
                         if (res.res == 'false') {
                            Swal.fire({
                               title: res.tittle,

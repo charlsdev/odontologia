@@ -11,6 +11,11 @@
    height: 20px;
 }
 
+.form-check-input[type=checkbox] {
+   width: 20px;
+   height: 20px;
+}
+
 .form-check {
    width: 150px;
    text-align: left;
@@ -20,4 +25,11 @@
    resize: none;
    font-size: .8rem !important;
    min-height: 35px;
+}
+
+.dropdown-menu li:hover a {
+   transition: 3;
+   font-weight: 600 !important;
+   background-color: #d2cdff;
+   color: #333;
 }

@@ -12,6 +12,7 @@ import {
    searchFicha,
    updateFicha,
    readFicha,
+   deleteFicha,
    agendarCita,
    renderCitas,
    getAllCitas,
@@ -36,6 +37,7 @@ router.post('/newFicha', isAuthenticated, newFicha);
 router.get('/searchFicha', isAuthenticated, searchFicha);
 router.post('/updateFicha', isAuthenticated, updateFicha);
 router.get('/readFicha', isAuthenticated, readFicha);
+router.delete('/deleteFicha', isAuthenticated, deleteFicha);
 router.post('/agendarCita', isAuthenticated, agendarCita);
 router.get('/citas', isAuthenticated, renderCitas);
 router.get('/allCitas', isAuthenticated, getAllCitas);

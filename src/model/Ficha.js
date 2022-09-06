@@ -37,10 +37,12 @@ const pacientsSchema = new Schema ({
          required: true
       }
    },
-   patologico: {
-      type: String,
-      required: true
-   },
+   patologico: [{
+      tipo: {
+         type: String,
+         required: true
+      }
+   }],
    alergia: {
       estado: {
          type: String,

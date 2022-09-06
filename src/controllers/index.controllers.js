@@ -20,7 +20,7 @@ export const loginAuth = passport.authenticate('local.login', {
    failureRedirect: '/',
    successRedirect: '/w',
    badRequestMessage: 'Credenciales desconocidas!!!',
-   failureFlash: true
+   failureFlash: true,
 });
 
 export const register = async (req, res) => {
@@ -72,7 +72,7 @@ export const register = async (req, res) => {
             tittle: 'CONTRASEÑAS DIFERENTES',
             description: 'Las contraseñas no coindicen.',
             icon: 'info',
-            res: 'false'
+            res: 'false',
          });
       } else {
          try {
@@ -85,7 +85,7 @@ export const register = async (req, res) => {
                   tittle: 'USUARIO EXISTENTE',
                   description: 'El usuario ya se encuentra registrado.',
                   icon: 'info',
-                  res: 'false'
+                  res: 'false',
                });
             } else {
                const newUser = new UserModel({
@@ -145,10 +145,9 @@ export const getAllPacients = async (req, res) => {
    let allPacients;
 
    try {
-      allPacients = await FichaModel
-         .find()
+      allPacients = await FichaModel.find()
          .select({
-            datosPersonal: 1
+            datosPersonal: 1,
          })
          .lean();
 
@@ -169,7 +168,8 @@ export const newFicha = async (req, res) => {
       direccion,
       telefono,
       email,
-      antec,
+      // antec,
+      'antec[]': anteArray,
       medi,
       mediCual,
       hemo,
@@ -180,6 +180,8 @@ export const newFicha = async (req, res) => {
       mesEmbarazo,
    } = req.body;
 
+   let antecedentes = [];
+
    let cedulaN = cedula.trim(),
       apellidosN = apellidos.trim(),
       nombresN = nombres.trim(),
@@ -188,7 +190,7 @@ export const newFicha = async (req, res) => {
       direccionN = direccion.trim(),
       telefonoN = telefono.trim(),
       emailN = email.trim(),
-      antecN = antec.trim(),
+      // antecN = antec.trim(),
       mediN = medi.trim(),
       mediCualN = mediCual.trim(),
       hemoN = hemo.trim(),
@@ -197,6 +199,14 @@ export const newFicha = async (req, res) => {
       hospiCuandoN = hospiCuando.trim(),
       embarazoN = embarazo.trim(),
       mesEmbarazoN = mesEmbarazo.trim();
+
+   if (anteArray.length > 0) {
+      anteArray.map((ant) => {
+         antecedentes.push({
+            tipo: ant,
+         });
+      });
+   }
 
    if (
       cedulaN === '' ||
@@ -216,11 +226,9 @@ export const newFicha = async (req, res) => {
       });
    } else {
       try {
-         const searchUser = await FichaModel
-            .findOne({
-               'datosPersonal.cedula': cedulaN
-            })
-            .lean();
+         const searchUser = await FichaModel.findOne({
+            'datosPersonal.cedula': cedulaN,
+         }).lean();
          // console.log(searchUser);
 
          if (searchUser) {
@@ -228,7 +236,7 @@ export const newFicha = async (req, res) => {
                tittle: 'FICHA CLÍNICA EXISTENTE',
                description: 'El usuario ya tiene su ficha clínica.',
                icon: 'info',
-               res: 'false'
+               res: 'false',
             });
          } else {
             const newPaciente = new FichaModel({
@@ -242,23 +250,24 @@ export const newFicha = async (req, res) => {
                   telefono: telefonoN,
                   email: emailN,
                },
-               patologico: antecN,
+               // patologico: antecN,
+               patologico: antecedentes,
                alergia: {
                   estado: mediN,
-                  cuales: mediCualN
+                  cuales: mediCualN,
                },
                hemorragia: {
                   estado: hemoN,
-                  cuando: hemoCuandoN
+                  cuando: hemoCuandoN,
                },
                hospitalizado: {
                   estado: hospiN,
-                  motivo: hospiCuandoN
+                  motivo: hospiCuandoN,
                },
                embarazo: {
                   estado: embarazoN,
-                  mes: mesEmbarazoN
-               }
+                  mes: mesEmbarazoN,
+               },
             });
 
             // console.log(newPaciente);
@@ -267,14 +276,16 @@ export const newFicha = async (req, res) => {
             if (savedHistoryClinica) {
                res.json({
                   tittle: 'FICHA CLÍNICA GENERADA',
-                  description: 'Se ha generado la ficha clínica del usuariocon éxito',
+                  description:
+                     'Se ha generado la ficha clínica del usuariocon éxito',
                   icon: 'success',
                   res: 'true',
                });
             } else {
                res.json({
                   tittle: 'FICHA CLÍNICA NO GENERADA',
-                  description: 'No se ha podido generar la ficha clínica al usuario',
+                  description:
+                     'No se ha podido generar la ficha clínica al usuario',
                   icon: 'info',
                   res: 'false',
                });
@@ -294,15 +305,11 @@ export const newFicha = async (req, res) => {
 };
 
 export const searchFicha = async (req, res) => {
-   const {
-      id
-   } = req.query;
+   const { id } = req.query;
 
    let idN = id.trim();
 
-   if (
-      idN === ''
-   ) {
+   if (idN === '') {
       res.json({
          tittle: 'Campos Vacíos',
          description: 'Los campos no pueden ir vacíos o con espacios!',
@@ -311,23 +318,21 @@ export const searchFicha = async (req, res) => {
       });
    } else {
       try {
-         const searchHistory = await FichaModel
-            .findOne({
-               _id: idN
-            })
-            .select({
-               datosPersonal: 1,
-               patologico: 1,
-               alergia: 1,
-               hemorragia: 1,
-               hospitalizado: 1,
-               embarazo: 1
-            });
+         const searchHistory = await FichaModel.findOne({
+            _id: idN,
+         }).select({
+            datosPersonal: 1,
+            patologico: 1,
+            alergia: 1,
+            hemorragia: 1,
+            hospitalizado: 1,
+            embarazo: 1,
+         });
          // console.log(searchHistory);
 
          res.json({
             res: 'data',
-            data: searchHistory
+            data: searchHistory,
          });
       } catch (e) {
          console.log(e);
@@ -352,7 +357,8 @@ export const updateFicha = async (req, res) => {
       direccion,
       telefono,
       email,
-      antec,
+      // antec,
+      'antec[]': anteArray,
       medi,
       mediCual,
       hemo,
@@ -363,6 +369,8 @@ export const updateFicha = async (req, res) => {
       mesEmbarazo,
    } = req.body;
 
+   let antecedentes = [];
+
    let idN = id.trim(),
       apellidosN = apellidos.trim(),
       nombresN = nombres.trim(),
@@ -371,7 +379,7 @@ export const updateFicha = async (req, res) => {
       direccionN = direccion.trim(),
       telefonoN = telefono.trim(),
       emailN = email.trim(),
-      antecN = antec.trim(),
+      // antecN = antec.trim(),
       mediN = medi.trim(),
       mediCualN = mediCual.trim(),
       hemoN = hemo.trim(),
@@ -380,6 +388,14 @@ export const updateFicha = async (req, res) => {
       hospiCuandoN = hospiCuando.trim(),
       embarazoN = embarazo.trim(),
       mesEmbarazoN = mesEmbarazo.trim();
+
+   if (anteArray.length > 0) {
+      anteArray.map((ant) => {
+         antecedentes.push({
+            tipo: ant,
+         });
+      });
+   }
 
    if (
       idN === '' ||
@@ -399,25 +415,24 @@ export const updateFicha = async (req, res) => {
       });
    } else {
       try {
-         const searchFicha = await FichaModel
-            .findOne({
-               _id: idN
-            })
-            .lean();
-         console.log(searchFicha);
+         const searchFicha = await FichaModel.findOne({
+            _id: idN,
+         }).lean();
+         // console.log(searchFicha);
 
          if (!searchFicha) {
             res.json({
                tittle: 'FICHA CLÍNICA NO EXISTENTE',
                description: 'La ficha clínica a actualizar no existe.',
                icon: 'info',
-               res: 'false'
+               res: 'false',
             });
          } else {
-            const updateFicha = await FichaModel
-               .updateOne({
-                  _id: id
-               }, {
+            const updateFicha = await FichaModel.updateOne(
+               {
+                  _id: id,
+               },
+               {
                   $set: {
                      'datosPersonal.apellidos': apellidosN,
                      'datosPersonal.nombres': nombresN,
@@ -426,7 +441,8 @@ export const updateFicha = async (req, res) => {
                      'datosPersonal.direccion': direccionN,
                      'datosPersonal.telefono': telefonoN,
                      'datosPersonal.email': emailN,
-                     patologico: antecN,
+                     // 'patologico': antecN,
+                     patologico: antecedentes,
                      'alergia.estado': mediN,
                      'alergia.cuales': mediCualN,
                      'hemorragia.estado': hemoN,
@@ -434,22 +450,25 @@ export const updateFicha = async (req, res) => {
                      'hospitalizado.estado': hospiN,
                      'hospitalizado.motivo': hospiCuandoN,
                      'embarazo.estado': embarazoN,
-                     'embarazo.mes': mesEmbarazoN
-                  }
-               });
-            console.log(updateFicha);
+                     'embarazo.mes': mesEmbarazoN,
+                  },
+               }
+            );
+            // console.log(updateFicha);
 
             if (updateFicha.modifiedCount > 0) {
                res.json({
                   tittle: 'FICHA CLÍNICA ACTUALIZADA',
-                  description: 'Se ha actualizado la ficha clínica del usuario con éxito',
+                  description:
+                     'Se ha actualizado la ficha clínica del usuario con éxito',
                   icon: 'success',
                   res: 'true',
                });
             } else {
                res.json({
                   tittle: 'FICHA CLÍNICA NO ACTUALIZADA',
-                  description: 'No se ha podido actualizar la ficha clínica al usuario',
+                  description:
+                     'No se ha podido actualizar la ficha clínica al usuario',
                   icon: 'info',
                   res: 'false',
                });
@@ -469,15 +488,11 @@ export const updateFicha = async (req, res) => {
 };
 
 export const readFicha = async (req, res) => {
-   const {
-      id
-   } = req.query;
+   const { id } = req.query;
 
    let idN = id.trim();
 
-   if (
-      idN === ''
-   ) {
+   if (idN === '') {
       res.json({
          tittle: 'Campos Vacíos',
          description: 'Los campos no pueden ir vacíos o con espacios!',
@@ -486,23 +501,20 @@ export const readFicha = async (req, res) => {
       });
    } else {
       try {
-         const searchFicha = await FichaModel
-            .findOne({
-               _id: idN
-            })
-            .select({
-               datosPersonal: 1,
-               patologico: 1,
-               alergia: 1,
-               hemorragia: 1,
-               hospitalizado: 1,
-               embarazo: 1
-            });
+         const searchFicha = await FichaModel.findOne({
+            _id: idN,
+         }).select({
+            datosPersonal: 1,
+            patologico: 1,
+            alergia: 1,
+            hemorragia: 1,
+            hospitalizado: 1,
+            embarazo: 1,
+         });
 
-         const searchHistory = await HistorialModel
-            .find({
-               _IDPacient: idN
-            })
+         const searchHistory = await HistorialModel.find({
+            _IDPacient: idN,
+         })
             .select({
                fecha: 1,
                tratamiento: 1,
@@ -516,8 +528,8 @@ export const readFicha = async (req, res) => {
             res: 'data',
             data: {
                ficha: searchFicha,
-               historial: searchHistory
-            }
+               historial: searchHistory,
+            },
          });
       } catch (e) {
          console.log(e);
@@ -533,13 +545,7 @@ export const readFicha = async (req, res) => {
 };
 
 export const agendarCita = async (req, res) => {
-   const {
-      id,
-      fecha,
-      precio,
-      tratamiento,
-      observaciones,
-   } = req.body;
+   const { id, fecha, precio, tratamiento, observaciones } = req.body;
 
    let idN = id.trim(),
       fechaN = fecha.trim(),
@@ -547,12 +553,7 @@ export const agendarCita = async (req, res) => {
       tratamientoN = tratamiento.trim(),
       observacionesN = observaciones.trim();
 
-   if (
-      idN === '' ||
-      fechaN === '' ||
-      precioN === '' ||
-      tratamientoN === ''
-   ) {
+   if (idN === '' || fechaN === '' || precioN === '' || tratamientoN === '') {
       res.json({
          tittle: 'Campos Vacíos',
          description: 'Los campos no pueden ir vacíos o con espacios!',
@@ -561,20 +562,20 @@ export const agendarCita = async (req, res) => {
       });
    } else {
       try {
-         const searchCita = await HistorialModel
-            .find({
-               _IDPacient: idN,
-               fecha: moment(fechaN).format('L')
-            })
-            .lean();
+         const searchCita = await HistorialModel.find({
+            _IDPacient: idN,
+            fecha: moment(fechaN).format('L'),
+         }).lean();
          console.log(searchCita.length);
 
          if (searchCita.length > 0) {
             res.json({
                tittle: 'CITA YA SEPARADA',
-               description: `El paciente tiene una cita para el dia <b>${moment(fechaN).format('ll')}</b>.`,
+               description: `El paciente tiene una cita para el dia <b>${moment(
+                  fechaN
+               ).format('ll')}</b>.`,
                icon: 'info',
-               res: 'false'
+               res: 'false',
             });
          } else {
             const newCita = new HistorialModel({
@@ -593,7 +594,9 @@ export const agendarCita = async (req, res) => {
             if (savedCita) {
                res.json({
                   tittle: 'CITA SEPARADA',
-                  description: `Se ha separado la cita con éxito para el <b>${moment(fechaN).format('ll')}</b>.`,
+                  description: `Se ha separado la cita con éxito para el <b>${moment(
+                     fechaN
+                  ).format('ll')}</b>.`,
                   icon: 'success',
                   res: 'true',
                });
@@ -627,10 +630,9 @@ export const getAllCitas = async (req, res) => {
    let allCitas;
 
    try {
-      allCitas = await HistorialModel
-         .find({
-            // fecha: moment().format('L')
-         })
+      allCitas = await HistorialModel.find({
+         // fecha: moment().format('L')
+      })
          .select({
             _IDPacient: 1,
             fecha: 1,
@@ -641,7 +643,8 @@ export const getAllCitas = async (req, res) => {
          })
          .populate({
             path: '_IDPacient',
-            select: '_id datosPersonal.cedula datosPersonal.nombres datosPersonal.apellidos'
+            select:
+               '_id datosPersonal.cedula datosPersonal.nombres datosPersonal.apellidos',
          })
          .sort({
             fecha: 1,
@@ -657,15 +660,11 @@ export const getAllCitas = async (req, res) => {
 };
 
 export const searchCita = async (req, res) => {
-   const {
-      id
-   } = req.query;
+   const { id } = req.query;
 
    let idN = id.trim();
 
-   if (
-      idN === ''
-   ) {
+   if (idN === '') {
       res.json({
          tittle: 'Campos Vacíos',
          description: 'Los campos no pueden ir vacíos o con espacios!',
@@ -674,29 +673,26 @@ export const searchCita = async (req, res) => {
       });
    } else {
       try {
-         const searchCita = await HistorialModel
-            .findOne({
-               _id: idN
-            });
+         const searchCita = await HistorialModel.findOne({
+            _id: idN,
+         });
          // console.log(searchCita);
 
          if (searchCita) {
-            const searchHistory = await HistorialModel
-               .findOne({
-                  _id: idN
-               })
-               .select({
-                  fecha: 1,
-                  tratamiento: 1,
-                  monto: 1,
-                  observaciones: 1,
-                  estado: 1
-               });
+            const searchHistory = await HistorialModel.findOne({
+               _id: idN,
+            }).select({
+               fecha: 1,
+               tratamiento: 1,
+               monto: 1,
+               observaciones: 1,
+               estado: 1,
+            });
             // console.log(searchHistory);
 
             res.json({
                res: 'data',
-               data: searchHistory
+               data: searchHistory,
             });
          } else {
             res.json({
@@ -719,16 +715,79 @@ export const searchCita = async (req, res) => {
    }
 };
 
+export const deleteFicha = async (req, res) => {
+   const { id } = req.body;
+
+   let idN = id.trim();
+
+   if (idN === '') {
+      res.json({
+         tittle: 'Campos Vacíos',
+         description: 'Los campos no pueden ir vacíos o con espacios!',
+         icon: 'warning',
+         res: 'false',
+      });
+   } else {
+      try {
+         const searchPaciente = await FichaModel.findOne({
+            _id: idN,
+         });
+         // console.log(searchCita);
+
+         if (searchPaciente) {
+            const deleteFicha = await FichaModel.deleteOne({
+               _id: idN,
+            });
+
+            const deleteHistorial = await HistorialModel.deleteMany({
+               _IDPacient: idN,
+            });
+
+            if (
+               deleteFicha.deletedCount > 0 &&
+               deleteHistorial.deletedCount > 0
+            ) {
+               res.json({
+                  tittle: 'Paciente eliminado',
+                  description:
+                     'Se ha eliminado con éxito la información del paciente.',
+                  icon: 'success',
+                  res: 'true',
+               });
+            } else {
+               res.json({
+                  tittle: 'Paciente no eliminado',
+                  description:
+                     'No se ha podido eliminar la información del paciente.',
+                  icon: 'error',
+                  res: 'false',
+               });
+            }
+         } else {
+            res.json({
+               tittle: 'Paciente no registrado',
+               description:
+                  'La información del paciente a eliminar no ha sido encontrada!',
+               icon: 'warning',
+               res: 'false',
+            });
+         }
+      } catch (e) {
+         console.log(e);
+
+         res.json({
+            tittle: 'Problemas',
+            description: 'Opss! Error 500 x_x. ¡Intentelo más luego!',
+            icon: 'error',
+            res: 'error',
+         });
+      }
+   }
+};
+
 export const updateCita = async (req, res) => {
-   const {
-      idP,
-      idC,
-      fecha,
-      precio,
-      tratamiento,
-      observaciones,
-      estado
-   } = req.body;
+   const { idP, idC, fecha, precio, tratamiento, observaciones, estado } =
+      req.body;
 
    let idPN = idP.trim(),
       idCN = idC.trim(),
@@ -755,28 +814,29 @@ export const updateCita = async (req, res) => {
       });
    } else {
       try {
-         const searchCita = await HistorialModel
-            .findOne({
-               _id: idCN,
-               _IDPacient: idPN
-            });
+         const searchCita = await HistorialModel.findOne({
+            _id: idCN,
+            _IDPacient: idPN,
+         });
          // console.log(searchCita);
 
          if (searchCita) {
-            const updateCita = await HistorialModel
-               .updateOne({
+            const updateCita = await HistorialModel.updateOne(
+               {
                   _id: idCN,
-                  _IDPacient: idPN
-               }, {
+                  _IDPacient: idPN,
+               },
+               {
                   $set: {
                      _IDUser: req.user.id,
                      fecha: moment(fechaN).format('L'),
                      tratamiento: tratamientoN,
                      monto: precioN,
                      observaciones: observacionesN,
-                     estado: estadoN
-                  }
-               });
+                     estado: estadoN,
+                  },
+               }
+            );
 
             if (updateCita.modifiedCount > 0) {
                res.json({
@@ -815,34 +875,29 @@ export const updateCita = async (req, res) => {
 };
 
 export const generateFichaPDF = async (req, res) => {
-   const {
-      idP
-   } = req.query;
+   const { idP } = req.query;
 
    let idPN = idP.trim();
 
-   if (
-      idPN === ''
-   ) {
+   if (idPN === '') {
       res.json({
          tittle: 'Campos Vacíos',
          description: 'Los campos no pueden ir vacíos o con espacios!',
          icon: 'warning',
-         res: 'false'
+         res: 'false',
       });
-   } else {   
+   } else {
       try {
-         const searchPaciente = await FichaModel
-            .findOne({
-               _id: idPN
-            })
+         const searchPaciente = await FichaModel.findOne({
+            _id: idPN,
+         })
             .select({
                datosPersonal: 1,
                patologico: 1,
                alergia: 1,
                hemorragia: 1,
                hospitalizado: 1,
-               embarazo: 1
+               embarazo: 1,
             })
             .lean();
 
@@ -851,13 +906,12 @@ export const generateFichaPDF = async (req, res) => {
                tittle: 'Ficha no encontrada',
                description: 'La ficha a generar no existe!!!',
                icon: 'info',
-               res: 'false'
+               res: 'false',
             });
          } else {
-            const searchHistory = await HistorialModel
-               .find({
-                  _IDPacient: idPN
-               })
+            const searchHistory = await HistorialModel.find({
+               _IDPacient: idPN,
+            })
                .select({
                   fecha: 1,
                   tratamiento: 1,
@@ -872,44 +926,73 @@ export const generateFichaPDF = async (req, res) => {
                   tittle: 'Ficha no encontrada',
                   description: 'La ficha a generar no existe!!!',
                   icon: 'info',
-                  res: 'false'
+                  res: 'false',
                });
             } else {
+               let allAnt = '',
+                  ante = searchPaciente.patologico;
+
+               if (ante.length > 0) {
+                  ante.map((ant, idx) => {
+                     if (idx > 0) allAnt += ' - ';
+                     allAnt += ant.tipo;
+                  });
+               } else {
+                  allAnt = 'Sin datos';
+               }
+
                const paramsHTML = {
                   userDate: `${req.user.nombres} ${req.user.apellidos}`,
                   cedula: searchPaciente.datosPersonal.cedula,
                   nombres: searchPaciente.datosPersonal.nombres,
                   apellidos: searchPaciente.datosPersonal.apellidos,
-                  fechaNacimiento: moment(searchPaciente.datosPersonal.fechaNacimiento).format('ll'),
+                  fechaNacimiento: moment(
+                     searchPaciente.datosPersonal.fechaNacimiento
+                  ).format('ll'),
                   genero: searchPaciente.datosPersonal.genero,
                   direccion: searchPaciente.datosPersonal.direccion,
                   telefono: searchPaciente.datosPersonal.telefono,
                   email: searchPaciente.datosPersonal.email,
-                  patologico: searchPaciente.patologico,
+                  // patologico: searchPaciente.patologico,
+                  patologico: allAnt,
                   alergiaEst: searchPaciente.alergia.estado,
-                  alergiaCua: searchPaciente.alergia.cuales,
+                  alergiaCua: searchPaciente.alergia.cuales
+                     ? `- ${searchPaciente.alergia.cuales}`
+                     : '',
                   hemorragiaEst: searchPaciente.hemorragia.estado,
-                  hemorragiaCua: searchPaciente.hemorragia.cuando,
+                  hemorragiaCua: searchPaciente.hemorragia.cuando
+                     ? `- ${searchPaciente.hemorragia.cuando}`
+                     : '',
                   hospitalizadoEst: searchPaciente.hospitalizado.estado,
-                  hospitalizadoCua: searchPaciente.hospitalizado.motivo,
+                  hospitalizadoCua: searchPaciente.hospitalizado.motivo
+                     ? `- ${searchPaciente.hospitalizado.motivo}`
+                     : '',
                   embarazoEst: searchPaciente.embarazo.estado,
-                  embarazoCua: searchPaciente.embarazo.mes,
-                  searchHistory
+                  embarazoCua: searchPaciente.embarazo.mes
+                     ? `- ${searchPaciente.embarazo.mes}`
+                     : '',
+                  searchHistory,
                };
 
-               const html = fse.readFileSync(path.join(__dirname, '/src/template/ficha.html'), 'utf-8');
-               const filename = 'Ficha Medica - ' + searchPaciente.datosPersonal.cedula + '.pdf';
+               const html = fse.readFileSync(
+                  path.join(__dirname, '/src/template/ficha.html'),
+                  'utf-8'
+               );
+               const filename =
+                  'Ficha Medica - ' +
+                  searchPaciente.datosPersonal.cedula +
+                  '.pdf';
 
                const document = {
                   html: html,
                   data: {
-                     paramsHTML
+                     paramsHTML,
                   },
-                  path: path.join(__dirname, '/src/docs/') + filename
+                  path: path.join(__dirname, '/src/docs/') + filename,
                };
 
                let data;
-                  
+
                try {
                   data = await pdf.create(document, configPDF);
                   path.join(__dirname, '/src/docs/' + filename);
@@ -917,21 +1000,22 @@ export const generateFichaPDF = async (req, res) => {
                } catch (e) {
                   console.log(e);
                }
-                  
+
                if (data) {
                   res.json({
                      tittle: 'Ficha generada',
                      description: 'Se ha generado la ficha con éxito!!!',
                      icon: 'success',
                      res: 'true',
-                     filename
+                     filename,
                   });
                } else {
                   res.json({
                      tittle: 'Ficha no generada',
-                     description: 'Opss! No se podido generar la ficha. ¡Intentelo más luego!',
+                     description:
+                        'Opss! No se podido generar la ficha. ¡Intentelo más luego!',
                      icon: 'error',
-                     res: 'false'
+                     res: 'false',
                   });
                }
             }
@@ -943,16 +1027,14 @@ export const generateFichaPDF = async (req, res) => {
             tittle: 'Problemas',
             description: 'Opss! Error 500 x_x. ¡Intentelo más luego!',
             icon: 'error',
-            res: 'error'
+            res: 'error',
          });
       }
    }
 };
 
 export const viewPDF = async (req, res) => {
-   const {
-      file
-   } = req.params;
+   const { file } = req.params;
 
    res.render('pdf', { file });
 };
@@ -966,9 +1048,9 @@ export const renderProfile = async (req, res) => {
       genero,
       direccion,
       telefono,
-      email
+      email,
    } = req.user;
-   
+
    res.render('profile', {
       cedula,
       apellidos,
@@ -977,7 +1059,7 @@ export const renderProfile = async (req, res) => {
       genero,
       direccion,
       telefono,
-      email
+      email,
    });
 };
 
@@ -990,7 +1072,7 @@ export const updateProfile = async (req, res) => {
       genero,
       direccion,
       telefono,
-      email
+      email,
    } = req.body;
 
    let cedulaN = cedula.trim(),
@@ -1020,23 +1102,23 @@ export const updateProfile = async (req, res) => {
       });
    } else {
       try {
-         const searchUser = await UserModel
-            .findOne({
-               cedula: req.user.cedula,
-            }).lean();
+         const searchUser = await UserModel.findOne({
+            cedula: req.user.cedula,
+         }).lean();
 
          if (!searchUser) {
             res.json({
                tittle: 'USUARIO NO EXISTENTE',
                description: 'No te encuentras registrado en el sistema.',
                icon: 'error',
-               res: 'false'
+               res: 'false',
             });
          } else {
-            const updateUser = await UserModel
-               .updateOne({
-                  cedula: cedulaN
-               }, {
+            const updateUser = await UserModel.updateOne(
+               {
+                  cedula: cedulaN,
+               },
+               {
                   cedula: cedulaN,
                   apellidos: apellidosN,
                   nombres: nombresN,
@@ -1044,8 +1126,9 @@ export const updateProfile = async (req, res) => {
                   genero: generoN,
                   direccion: direccionN,
                   telefono: telefonoN,
-                  email: emailN
-               });
+                  email: emailN,
+               }
+            );
 
             if (updateUser.modifiedCount > 0) {
                res.json({
@@ -1077,8 +1160,8 @@ export const updateProfile = async (req, res) => {
 };
 
 export const logout = (req, res, next) => {
-   req.logout(req.user, err => {
-      if(err) return next(err);
+   req.logout(req.user, (err) => {
+      if (err) return next(err);
       req.flash('warning_msg', 'Sesión cerrada. Vuelva pronto...');
       res.redirect('/');
    });
