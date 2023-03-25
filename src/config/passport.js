@@ -13,7 +13,7 @@ passport.use('local.login', new Strategy({
       .findOne({
          cedula
       });
-   
+
    if (!user) {
       return done(null, false, { message: 'Usuario y/o contraseña incorrectas...'});
    } else {
@@ -32,11 +32,11 @@ passport
       done(null, user.id);
    });
 
-passport
-   .deserializeUser(async (id, done) => {
-      await UsersModel
-         .findById(id, (err, user) => {
-            done(err, user);
-         })
-         .clone();
-   });
+passport.deserializeUser(async (id, done) => {
+   try {
+      const user = await UsersModel.findById(id).exec();
+      done(null, user);
+   } catch (err) {
+      done(err, null);
+   }
+});
